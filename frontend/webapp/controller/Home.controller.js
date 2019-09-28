@@ -13,15 +13,18 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function () {
+			this.getOwnerComponent().getRouter().getRoute("home").attachPatternMatched(this.onRouteMatched.bind(this), this);
 
+
+
+		},
+		
+		onRouteMatched: function (oEvent) {
 			this.APIManager = new APIManager("http://10.4.1.121:3000");
 			this.treeModel = new JSONModel({});
 			this.getOwnerComponent().setModel(this.treeModel, "formModel");
 			this.loadData();
-
-
 		},
-
 
 
 		loadData: async function () {

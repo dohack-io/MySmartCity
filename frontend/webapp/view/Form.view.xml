@@ -7,6 +7,8 @@
 	xmlns:core="sap.ui.core" 
 	xmlns:u="sap.ui.unified">
 	<Page id="page" 
+		navButtonPress="onNavButton" 
+		showNavButton="true" 
 		title="{i18n>title}">
 		<content>
 			<f:Form id="Form" 
@@ -35,11 +37,15 @@
 				</f:formContainers>
 			</f:Form>
 		</content>
-				<footer>
+		<footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Accept" text="{i18n>save}" press="onSave"/>
-				<Button type="Reject" text="{i18n>cancel}" press="onCancel"/>
+				<Button type="Accept" 
+					text="{i18n>save}" 
+					press="onSave"/>
+				<Button type="Reject" 
+					text="{i18n>cancel}" 
+					press="onCancel"/>
 			</OverflowToolbar>
 		</footer>
 	</Page>

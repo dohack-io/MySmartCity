@@ -1,11 +1,13 @@
 sap.ui.define([
 	"sap/m/MessageBox",
+	"sap/m/MessageToast",
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/unified/FileUploader",
 	"../model/formatter",
 	"../utils/APIManager",
+	"sap/ui/core/routing/History",
 	"sap/ui/model/json/JSONModel"
-], function (MessageBox, Controller, FileUploader, formatter, APIManager, JSONModel) {
+], function (MessageBox, MessageToast, Controller, FileUploader, formatter, APIManager, History, JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.basicTemplate.controller.App", {
@@ -24,18 +26,33 @@ sap.ui.define([
 
 
 		},
+
+		onNavButton: function (oEvent) {
+			this.getBack();
+		},
+
+		getBack: function () {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("home", true);
+
+		},
+
+
 		onRouteMatched: function (oEvent) {
 			var oArgs = oEvent.getParameter("arguments");
 			var sFormid = oArgs.formid;
 			var sCategoryId = oArgs.categoryid;
-			this.loadData(oArgs.categoryid + "/" + oArgs.formid);
+			this.oForm = this.getView().byId("FormContainer");
+			this.sFullName = oArgs.categoryid + "/" + oArgs.formid;
+			this.loadData(this.sFullName);
 
 		},
 
 		loadData: async function (isURL) {
 			var data = await this.APIManager.getApplicationForm(isURL);
-			var oForm = this.getView().byId("FormContainer");
 			var that = this;
+			var oForm = this.getView().byId("FormContainer");
+
 			data.forEach(function (oElement) {
 				switch (oElement.type) {
 					case "text":
@@ -82,34 +99,71 @@ sap.ui.define([
 
 		addDateTimeInput: function (isID, isLabel, isPlaceholder, isMinDate, isMaxDate) {
 			var newFormElement = this.addFormElement(isLabel);
-			var newField = new sap.m.DateTimeInput(isID);
+			var newField = new sap.m.DateTimePicker(isID);
 			newField.setPlaceholder(isPlaceholder);
-			newField.setType("Date");
 			newFormElement.addField(newField);
 			return newFormElement;
 		},
 
 		onSave: function () {
-			var oForm = this.getView().byId("FormContainer");
-			this.getValuesInForm(oForm);
+			var aFormData = this.getValuesInForm(this.oForm);
+			this.sendData(aFormData);
 		},
 
-		getValuesInForm: function (oForm) {
-			var aElements = oForm.getFormElements();
-			aElements.forEach(function (oElement) {
-				console.log(oElement.getFields()[0].getId());
-				console.log(oElement.getFields()[0].getValue());
+		sendData: async function (iaData) {
+			var aErrorData = await this.APIManager.submitApplicationForm(this.sFullName, iaData);
+			if (Object.keys(aErrorData).length != 0) {
+				this.setErrorData(aErrorData);
+			} else {
+				var msg = 'Application Form is send';
+				MessageToast.show(msg);
+				setTimeout('', 5000);
+				this.getBack();
+			}
+		},
+
+		setErrorData: function (aErrorData) {
+			this.oForm = this.getView().byId("FormContainer");
+			var aElements = this.oForm.getFormElements();
+			Object.keys(aErrorData).forEach(oElement => {
+				var oInput = sap.ui.getCore().byId(oElement);
+				var sErrorText = aErrorData[oElement];
+				console.log(sErrorText);
+				oInput.setValueStateText(sErrorText);
+				oInput.setValueState(sap.ui.core.ValueState.Error
+				);
 			});
 		},
 
+
+		getValuesInForm: function (oForm) {
+			var aElements = oForm.getFormElements();
+			var aData = {};
+			aElements.forEach(function (oElement) {
+				var sId = oElement.getFields()[0].getId();
+				var oControl = sap.ui.getCore().byId(sId);
+				var sType = oControl.getMetadata().getName();
+				var sValue;
+				switch (sType) {
+					case "sap.m.DateTimePicker":
+						sValue = oElement.getFields()[0].getDateValue();
+						break;
+					default:
+						sValue = oElement.getFields()[0].getValue();
+				}
+				aData[sId] = sValue;
+			});
+
+			return aData;
+		},
+
 		onCancel: function () {
-			var oForm = this.getView().byId("FormContainer");
-			if (this.checkValuesInForm(oForm) == true) {
+			if (this.checkValuesInForm(this.oForm) == true) {
 				this.checkDeleteValues();
 
 
 			} else {
-				this.deleteValuesInForm(oForm);
+				this.deleteValuesInForm(this.oForm);
 			}
 		},
 
@@ -123,8 +177,7 @@ sap.ui.define([
 					styleClass: bCompact ? "sapUiSizeCompact" : "",
 					onClose: function (sAction) {
 						if (sAction == MessageBox.Action.YES) {
-							var oForm = that.getView().byId("FormContainer");
-							that.deleteValuesInForm(oForm);
+							that.deleteValuesInForm(this.oForm);
 						} else if (sAction == MessageBox.Action.NO) {
 						}
 					}
@@ -151,12 +204,6 @@ sap.ui.define([
 			});
 			return rbCheckValues;
 		},
-
-
-
-
-
-
 
 	});
 });
