@@ -16,28 +16,28 @@ export class Movement extends AApplicationForm<MovementData> {
             {
                 type: "text",
                 id: "street",
-                label: "Straße"
+                label: "Street"
             },
             {
                 type: "text",
                 id: "hnr",
-                label: "Hausnummer"
+                label: "Home Number"
             },
             {
                 type: "number",
                 id: "postalcode",
-                label: "PLZ"
+                label: "Postalcode"
             },
             {
                 type: "text",
                 id: "city",
-                label: "Stadt"
+                label: "City"
             },
             {
                 type: "dateTime",
                 id: "date",
                 min: new Date(),
-                label: "Umzugsdatum"
+                label: "Movement Date"
             }
         ]
     }    

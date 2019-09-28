@@ -23,12 +23,12 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
             {
                 type: "text",
                 id: "kennz",
-                label: "Wunschkennzeichen"
+                label: "Number Plate"
             },
             {
                 type: "text",
                 id: "fgn",
-                label: "Fahrgestellnummer des Fahrzeuges"
+                label: "Chassis Number"
             }
         ];
     }
