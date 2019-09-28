@@ -6,7 +6,7 @@ export type ApplicationFormFactoryCollection = { [requestTypeName: string]: Appl
 
 export class ApplicationFormCategory {
 
-    private requests: ApplicationFormFactoryCollection;
+    private forms: ApplicationFormFactoryCollection;
     private _categoryName: string;
     private _categoryId: string;
 
@@ -16,24 +16,32 @@ export class ApplicationFormCategory {
     constructor(categoryId: string, categoryName: string = categoryId) {
         this._categoryId = categoryId;
         this._categoryName = categoryName;
-        this.requests = {};
+        this.forms = {};
     }
 
+    /**
+     * Gibt alle Anträge dieser Kategorie zurück
+     */
     public get applicationForms(): ApplicationFormFactoryCollection {
-        return this.requests;
+        return this.forms;
     }
 
+    /**
+     * Fügt der Kategorie einen neuen Antrag hinzu
+     * @param requestTypeName Name des Antrags
+     * @param requestFactory Konstruktorfunktion des Antrags
+     */
     public addRequest(
         requestTypeName: string | ApplicationFormFactoryCollection,
         requestFactory?: ApplicationFormFactory
     ): void {
 
         if (typeof(requestTypeName) == "string") {
-            if (this.requests[requestTypeName]) {
+            if (this.forms[requestTypeName]) {
                 throw new Error("Request with this name already created");
             }
 
-            this.requests[requestTypeName] = requestFactory;
+            this.forms[requestTypeName] = requestFactory;
         }
         else {
             for (let key of Object.keys(requestTypeName)) {
@@ -42,7 +50,11 @@ export class ApplicationFormCategory {
         }
     }
 
-    public getRequestFactory(requestType: string) : ApplicationFormFactory {
-        return this.requests[requestType];
+    /**
+     * Gibt den Antrag mit der ID der Kategorie zurück (falls vorhanden)
+     * @param formId ID des Antrags
+     */
+    public getRequestFactory(formId: string) : ApplicationFormFactory {
+        return this.forms[formId];
     }
 }

@@ -5,6 +5,10 @@ import { ApplicationFormMetadata } from "./ApplicationFormMetadata";
 
 type UserSubmitedData = { [key: string]: any };
 type ValidateResponse = { [key: string]: string };
+
+/**
+ * Daten welcher jeder Antrag hat
+ */
 type GeneralRequest = {
     id?: string;
     userId: string;
@@ -65,6 +69,10 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
      */
     public abstract get applicationFormTitle(): string;
 
+    /**
+     * Bearbeitet einen Nutzerantrag und speichert diesen bei Erfolg
+     * @param data Daten, welche der Nutzer übermittelt hat
+     */
     public async processUserData(data: UserSubmitedData): Promise<ValidateResponse | void> {
         // Userdaten entsprechen gefordertes Format
         if (this.validateDataType(data)) {
@@ -88,6 +96,9 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
         return Object.keys(response).length === 0;
     }
 
+    /**
+     * Erzeugt Daten, welche bei jedem Antrag mitgespeichert werden
+     */
     private createGeneralRequest(): GeneralRequest {
         return {
             created: new Date(),
@@ -102,6 +113,11 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
         await this.collection.insertOne(saveData);
     }
 
+    /**
+     * Vereint Daten
+     * @param data Daten, welcher dieser Antrag speichert
+     * @param general Daten, welche jeder Antrag enhält
+     */
     private extend<T, GeneralRequest>(data: T, general: GeneralRequest): T & GeneralRequest {
         let merged: Partial<T & GeneralRequest> = {};
 
