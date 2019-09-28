@@ -2,8 +2,8 @@ import AApplicationForm from "../../smart_framework/applicationForm/AApplication
 import { FormField } from "../../smart_framework/applicationForm/RequestField";
 
 interface VenicleData {
-    kennzeichen: string;
-    fahrgestellnummer: string;
+    kennz: string;
+    fgn: string;
 }
 
 export class VenicleRegistration extends AApplicationForm<VenicleData>{
@@ -14,8 +14,8 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
 
     public validateDataType(data: any): data is VenicleData {
         let tData = data as VenicleData;
-        return tData.kennzeichen !== undefined &&
-            tData.fahrgestellnummer !== undefined;
+        return tData.kennz !== undefined &&
+            tData.fgn !== undefined;
     }
 
     public get requestFields(): FormField[] {

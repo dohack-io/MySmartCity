@@ -2,6 +2,7 @@ import { ApplicationFormManager } from "./applicationForm/ApplicationFormManager
 import express from "express";
 import { ApplicationFormsRoute } from "./server/ApplicationFormsRoute";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 export default class MySmartCityServer {
 
@@ -11,6 +12,11 @@ export default class MySmartCityServer {
     public constructor(port: number) {
         this.port = port;
         this.app = express();
+        this.prepare();
+    }
+
+    private prepare(): void {
+        this.app.use(bodyParser.json());
     }
 
     public useCors(): MySmartCityServer {
