@@ -13,7 +13,7 @@ export default class UserFormsFinder extends DbTarget {
         this.user = user;
     }
 
-    public async findData() : Promise<GeneralRequest[]> {
+    public async findData(limit: number = 5) : Promise<GeneralRequest[]> {
         let collection = await this.getCollection<GeneralRequest>(AApplicationForm.COLLECTION_NAME);
 
         return await collection.find({
@@ -22,7 +22,7 @@ export default class UserFormsFinder extends DbTarget {
         .sort({
             created: -1
         })
-        .limit(10)
+        .limit(limit)
         .toArray();
     }
 }

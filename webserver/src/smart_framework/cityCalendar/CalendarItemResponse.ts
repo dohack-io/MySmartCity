@@ -37,7 +37,7 @@ export class CalendarItemResponse {
         for (let categoryName of this.categoricItems.keys()) {
             response.push({
                 categoryName: categoryName,
-                events: this.categoricItems.get(categoryName)
+                events: this.categoricItems.get(categoryName).sort((a,b) => a.start.getTime() - b.start.getTime())
             });
         }
         return response;
