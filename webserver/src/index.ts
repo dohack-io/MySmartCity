@@ -2,7 +2,7 @@ import { ApplicationFormManager } from "./smart_framework/applicationForm/Applic
 import MySmartCityServer from "./smart_framework/MySmartCityServer";
 import { VenicleRegistration } from "./stadt_dortmund/applicationForms/VenicleRegistration";
 
-let manager = new ApplicationFormManager("mongodb://localhost:27017", "mysmartcity");
+let manager = new ApplicationFormManager();
 manager.addCategories([
     {
         categoryId: "kfz",
@@ -13,7 +13,7 @@ manager.addCategories([
     }
 ]);
 
-new MySmartCityServer(3000)
+new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     .useCors()
     .useApplicationForms(manager)
     .start();

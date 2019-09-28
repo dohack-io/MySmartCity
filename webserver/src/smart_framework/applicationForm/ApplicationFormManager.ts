@@ -15,14 +15,10 @@ export type CategoryInformation = {
 export class ApplicationFormManager {
 
     private static DEFAULT_COLLECTION_NAME = "Requests";
-    
-    private dbConnectionUri: string;
-    private databaseName: string;
+
     public categories: {[categoryId: string]: ApplicationFormCategory};
 
-    public constructor(dbConnectionUri: string, dbName: string) {
-        this.dbConnectionUri = dbConnectionUri;
-        this.databaseName = dbName;
+    public constructor() {
         this.categories = {};
     }
 
@@ -46,9 +42,9 @@ export class ApplicationFormManager {
         return new formFactory(getFullId(categoryId, formId), user);
     }
 
-    public async getFullApplicationForm(categoryId: string, formId: string, user: User) : Promise<AApplicationForm<unknown>> {
+    public async getFullApplicationForm(categoryId: string, formId: string, user: User, database: Db) : Promise<AApplicationForm<unknown>> {
         let formFactory = this.getFormFactory(categoryId, formId);
-        return this.createInstance(formFactory, user, getFullId(categoryId, formId));
+        return this.createInstance(formFactory, user, getFullId(categoryId, formId), database);
     }
 
     private getFormFactory(categoryId: string, formId: string) : ApplicationFormFactory {
@@ -91,7 +87,7 @@ export class ApplicationFormManager {
         return result;
     }
 
-    private async createInstance(fac: ApplicationFormFactory, user: User, fullFormId: string) : Promise<AApplicationForm<unknown>> {
+    private async createInstance(fac: ApplicationFormFactory, user: User, fullFormId: string, database: Db) : Promise<AApplicationForm<unknown>> {
         let instance = new fac(fullFormId, user);
 
         let collectionName = instance.collectionName;
@@ -101,25 +97,17 @@ export class ApplicationFormManager {
         }
 
         instance.bindCollection(
-            await this.getCollection(collectionName)
+            await this.getCollection(database, collectionName)
         );
 
         return instance;
     }
 
-    private async getCollection(collectionName: string) : Promise<Collection> {
-        let dbInstance = await this.getDatabase();
-
+    private async getCollection(database: Db, collectionName: string) : Promise<Collection> {
         try {
-            await dbInstance.createCollection(collectionName);
+            await database.createCollection(collectionName);
         } catch (e) {}
 
-        return dbInstance.collection(collectionName);
-    }
-
-    private async getDatabase(): Promise<Db> {
-        let client = new MongoClient(this.dbConnectionUri, {useNewUrlParser: true});
-        await client.connect();
-        return client.db(this.databaseName);
+        return database.collection(collectionName);
     }
 }

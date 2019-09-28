@@ -2,6 +2,7 @@ import IServerRoute from "./IServerRoute";
 import express from "express";
 import { ApplicationFormManager } from "../applicationForm/ApplicationFormManager";
 import { ApplicationFormRestMetadata } from "../applicationForm/ApplicationFormMetadata";
+import RequestExtention from "../RequestExtention";
 
 export type ApplicationFormOverview = {
     [categoryName: string] : ApplicationFormRestMetadata[]
@@ -40,7 +41,7 @@ export class ApplicationFormsRoute implements IServerRoute {
         res.send(form.requestFields);
     }
 
-    async handleSubmit(req: express.Request, res: express.Response) : Promise<void> {
+    async handleSubmit(req: RequestExtention, res: express.Response) : Promise<void> {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
         
@@ -49,7 +50,7 @@ export class ApplicationFormsRoute implements IServerRoute {
             lastName: "Ittermann",
             userId: "abc13214654",
             email: "tim.ittermann@gmail.com"
-        });
+        }, await req.database());
 
         let response = await form.processUserData(req.body);
         res.send(response);
