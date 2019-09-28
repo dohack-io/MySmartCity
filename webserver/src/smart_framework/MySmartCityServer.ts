@@ -1,6 +1,7 @@
 import { ApplicationFormManager } from "./applicationForm/ApplicationFormManager";
 import express from "express";
 import { ApplicationFormsRoute } from "./server/ApplicationFormsRoute";
+import cors from "cors";
 
 export default class MySmartCityServer {
 
@@ -12,15 +13,22 @@ export default class MySmartCityServer {
         this.app = express();
     }
 
-    public start() {
+    public useCors(): MySmartCityServer {
+        this.app.use(cors());
+        return this;
+    }
+
+    public start() : MySmartCityServer {
         this.app.listen(this.port, ()=>
             console.log(`Serving MySmartCity Server at Port ${this.port}`)
         );
+        return this;
     }
 
-    public useApplicationForms(manager: ApplicationFormManager) : void {
+    public useApplicationForms(manager: ApplicationFormManager) : MySmartCityServer {
         let route = new ApplicationFormsRoute(manager);
         route.mount(this.app);
+        return this
     }
 
 }

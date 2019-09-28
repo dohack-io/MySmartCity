@@ -7,6 +7,7 @@ manager.createCategory("KFZ", {
     "register": VenicleRegistration
 });
 
-let server = new MySmartCityServer(3000);
-server.useApplicationForms(manager);
-server.start();
+new MySmartCityServer(3000)
+    .useCors()
+    .useApplicationForms(manager)
+    .start();
