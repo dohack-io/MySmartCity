@@ -32,7 +32,7 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
         this.requestType = formId;
     }
 
-    public bindCollection(collection: Collection) : void {
+    public bindCollection(collection: Collection): void {
         this.collection = collection;
     }
 
@@ -82,10 +82,8 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
             if (this.isValidValidateResponse(validateCallback)) {
                 await this.saveToDatabase(data);
             }
-            else {
-                // Nein? Abbrechen. User muss Daten ändern.
-                return validateCallback;
-            }
+
+            return validateCallback;
         }
         else {
             throw new Error("UserData has not the right format!");
