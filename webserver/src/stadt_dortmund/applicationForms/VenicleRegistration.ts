@@ -18,7 +18,7 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
             tData.fgn !== undefined;
     }
 
-    public get requestFields(): FormField[] {
+    public get requestFields(): FormField<VenicleData>[] {
         return [
             {
                 type: "text",
@@ -34,7 +34,6 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
     }
 
     public async validate(userData: VenicleData): Promise<{ [key: string]: string; }> {
-        console.log("Fancy validation");
         return {};
     }
 

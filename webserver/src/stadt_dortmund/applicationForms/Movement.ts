@@ -11,7 +11,7 @@ interface MovementData {
 
 export class Movement extends AApplicationForm<MovementData> {
     
-    public get requestFields(): FormField[] {
+    public get requestFields(): FormField<MovementData>[] {
         return [
             {
                 type: "text",
@@ -20,12 +20,12 @@ export class Movement extends AApplicationForm<MovementData> {
             },
             {
                 type: "text",
-                id: "hnr",
+                id: "number",
                 label: "Home Number"
             },
             {
                 type: "number",
-                id: "postalcode",
+                id: "postalCode",
                 label: "Postalcode"
             },
             {
@@ -43,10 +43,17 @@ export class Movement extends AApplicationForm<MovementData> {
     }    
 
     public async validate(userData: MovementData): Promise<{ [key: string]: string; }> {
-        return {};
+        let response: { [key: string]: string; } = {};
+        if (userData.date < new Date()) {
+            response["date"] = "Date must be larger then current date";
+        }
+        return response;
     }
+    
     public validateDataType(data: any): data is MovementData {
         let tData = data as MovementData;
+        tData.date = new Date(data.date);
+
         return tData.city !== undefined 
             && tData.date !== undefined
             && tData.number !== undefined

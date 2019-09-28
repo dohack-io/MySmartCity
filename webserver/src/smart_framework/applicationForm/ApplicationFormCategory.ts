@@ -1,7 +1,7 @@
 import AApplicationForm from "./AApplicationForm";
 import User from "../user_management/User";
 
-export type ApplicationFormFactory = new (fullFormId: string, user?: User) => AApplicationForm<unknown>;
+export type ApplicationFormFactory = new (fullFormId: string, user?: User) => AApplicationForm<any>;
 export type ApplicationFormFactoryCollection = { [requestTypeName: string]: ApplicationFormFactory };
 
 export class ApplicationFormCategory {

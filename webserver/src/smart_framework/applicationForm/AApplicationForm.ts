@@ -39,7 +39,7 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
     /**
      * Gibt die Felder die für diesen Antrag benötigt werden zurück
      */
-    public abstract get requestFields(): FormField[];
+    public abstract get requestFields(): FormField<T>[];
 
     /**
      * Daten des Nutzers
