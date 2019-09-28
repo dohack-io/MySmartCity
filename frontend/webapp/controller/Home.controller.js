@@ -56,10 +56,13 @@ sap.ui.define([
 					if (sTitle === oNode.text) {
 						sFullName = oNode.fullName;
 					}
-				
+
 				});
 			});
-			
+			if (sFullName) {
+				location.hash = "#form/" + sFullName;
+			}
+
 		}
 
 	});

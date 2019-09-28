@@ -76,6 +76,11 @@
 					"pattern": "",
 					"name": "home",
 					"target": ["home"]
+				},
+				{
+					"pattern": "form/{categoryid}/{formid}",
+					"name": "form",
+					"target" : "form"
 				}
 			],
 			"targets": {
@@ -83,6 +88,12 @@
 					"viewName": "Home",
 					"viewId": "home",
 					"viewLevel": 1,
+					"title": "{i18n>title}"
+				},
+				"form": {
+					"viewName": "Form",
+					"viewId": "form",
+					"viewLevel": 2,
 					"title": "{i18n>title}"
 				}
 			}
