@@ -1,41 +1,46 @@
-<mvc:View
-	controllerName="sap.ui.demo.basicTemplate.controller.Home"
-	displayBlock="true"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:l="sap.ui.layout"
-	xmlns:f="sap.ui.layout.form"
-	xmlns:core="sap.ui.core">
-	<Page
-		id="page"
+<mvc:View controllerName="sap.ui.demo.basicTemplate.controller.Home" 
+	displayBlock="true" 
+	xmlns="sap.m" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns:l="sap.ui.layout" 
+	xmlns:f="sap.ui.layout.form" 
+	xmlns:core="sap.ui.core" 
+	xmlns:u="sap.ui.unified">
+	<Page id="page" 
 		title="{i18n>title}">
 		<content>
-		<f:Form id="Form"
-			editable="true">
-			<f:title>
-				<core:Title id="title"/>
-			</f:title>
-			<f:layout>
-				<f:ResponsiveGridLayout
-					labelSpanXL="3"
-					labelSpanL="3"
-					labelSpanM="3"
-					labelSpanS="12"
-					adjustLabelSpan="false"
-					emptySpanXL="4"
-					emptySpanL="4"
-					emptySpanM="4"
-					emptySpanS="0"
-					columnsXL="1"
-					columnsL="1"
-					columnsM="1"
-					singleContainerFullSize="false" />
-			</f:layout>
-			<f:formContainers id="formContainers">
-				<f:FormContainer id="FormContainer">
-				</f:FormContainer>
-			</f:formContainers>
-		</f:Form>
+			<f:Form id="Form" 
+				editable="true">
+				<f:title>
+					<core:Title id="title"/>
+				</f:title>
+				<f:layout>
+					<f:ResponsiveGridLayout labelSpanXL="3" 
+						labelSpanL="3" 
+						labelSpanM="3" 
+						labelSpanS="12" 
+						adjustLabelSpan="false" 
+						emptySpanXL="4" 
+						emptySpanL="4" 
+						emptySpanM="4" 
+						emptySpanS="0" 
+						columnsXL="1" 
+						columnsL="1" 
+						columnsM="1" 
+						singleContainerFullSize="false" />
+				</f:layout>
+				<f:formContainers id="formContainers">
+					<f:FormContainer id="FormContainer">
+					</f:FormContainer>
+				</f:formContainers>
+			</f:Form>
 		</content>
+				<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Accept" text="{i18n>save}" press="OnSave"/>
+				<Button type="Reject" text="{i18n>cancel}" press="OnCancel"/>
+			</OverflowToolbar>
+		</footer>
 	</Page>
 </mvc:View>
