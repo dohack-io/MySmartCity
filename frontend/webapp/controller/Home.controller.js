@@ -15,8 +15,8 @@ sap.ui.define([
 		onInit: function () {
 
 			this.APIManager = new APIManager("http://10.4.1.121:3000");
-			this.formModel = new JSONModel({});
-			this.getOwnerComponent().setModel(this.formModel, "formModel");
+			this.treeModel = new JSONModel({});
+			this.getOwnerComponent().setModel(this.treeModel, "formModel");
 			this.loadData();
 
 
@@ -43,14 +43,14 @@ sap.ui.define([
 				result.push(item);
 			}
 
-			this.formModel.setData(result);
+			this.treeModel.setData(result);
 		},
 
 		onMenuSelChanged: function (oEvent) {
 			var oSelectedContext = oEvent.getParameter("listItem");
 			var sTitle = oSelectedContext.getTitle();
 			var sFullName;
-			var oModelData = this.formModel.getData();
+			var oModelData = this.treeModel.getData();
 			oModelData.forEach(function (oData) {
 				oData.nodes.forEach(function (oNode) {
 					if (sTitle === oNode.text) {
