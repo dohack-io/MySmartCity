@@ -20,8 +20,13 @@ export default abstract class ARequest<T> {
     private collection: Collection;
     private user: User;
 
-    constructor(collection: Collection, user: User) {
+    public requestType: string;
+
+    constructor(user: User) {
         this.user = user;
+    }
+
+    public bindCollection(collection: Collection) : void {
         this.collection = collection;
     }
 
@@ -36,7 +41,7 @@ export default abstract class ARequest<T> {
      */
     public abstract validate(userData: T): Promise<ValidateResponse>;
     public abstract get dataTypeValidator(): (data: any) => data is T;
-    public abstract get requestType(): string;
+    public abstract get collectionName(): string | null;
 
     public async processUserData(data: UserSubmitedData): Promise<ValidateResponse | void> {
         // Userdaten entsprechen gefordertes Format
