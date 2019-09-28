@@ -14,20 +14,22 @@ sap.ui.define([
 
 		onInit: function () {
 			this.getOwnerComponent().getRouter().getRoute("home").attachPatternMatched(this.onRouteMatched.bind(this), this);
-
-
-
 		},
-		
+
 		onRouteMatched: function (oEvent) {
 			this.APIManager = new APIManager("http://10.4.1.121:3000");
 			this.treeModel = new JSONModel({});
+			this.listModel = new JSONModel({});
 			this.getOwnerComponent().setModel(this.treeModel, "formModel");
-			this.loadData();
+			this.getOwnerComponent().setModel(this.listModel, "listModel");
+
+			this.loadTreeData();
+			this.loadListData();
+
 		},
 
 
-		loadData: async function () {
+		loadTreeData: async function () {
 			var data = await this.APIManager.getApplicationFormTree();
 
 			var result = [];
@@ -48,6 +50,12 @@ sap.ui.define([
 
 			this.treeModel.setData(result);
 		},
+
+		loadListData: async function () {
+			var data = await this.APIManager.getNotifications();
+			this.listModel.setData(data);
+		},
+
 
 		onMenuSelChanged: function (oEvent) {
 			var oSelectedContext = oEvent.getParameter("listItem");
