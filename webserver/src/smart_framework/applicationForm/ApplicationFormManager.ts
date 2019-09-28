@@ -4,6 +4,13 @@ import { Collection, MongoClient, Db } from "mongodb";
 import { ApplicationFormRestMetadata } from "./ApplicationFormMetadata";
 import User from "../user_management/User";
 import { ApplicationFormOverview } from "../server/ApplicationFormsRoute";
+import { getFullId } from "./Utils";
+
+export type CategoryInformation = {
+    categoryName: string,
+    categoryId: string,
+    forms: ApplicationFormFactoryCollection
+}
 
 export class ApplicationFormManager {
 
@@ -11,36 +18,59 @@ export class ApplicationFormManager {
     
     private dbConnectionUri: string;
     private databaseName: string;
-    public categories: ApplicationFormCategory[];
+    public categories: {[categoryId: string]: ApplicationFormCategory};
 
     public constructor(dbConnectionUri: string, dbName: string) {
         this.dbConnectionUri = dbConnectionUri;
         this.databaseName = dbName;
-        this.categories = [];
+        this.categories = {};
     }
 
-    public createCategory(categoryName: string, forms: ApplicationFormFactoryCollection) : void {
-        let category = new ApplicationFormCategory(categoryName);
-        category.addRequest(forms);
-        this.categories.push(category);
-    }
-
-    public async createRequest(requestType: string, user: User): Promise<AApplicationForm<unknown>> {
-       
-        for (let category of this.categories) {
-            if (category.hasRequestFactory(requestType)) {
-                let factory = category.getRequestFactory(requestType);
-                return await this.createInstance(factory, user);
-            }
+    public addCategories(collection: CategoryInformation[]) : ApplicationFormManager {
+        for (let categoryInfo of collection) {
+            this.createCategory(categoryInfo.categoryName, categoryInfo.forms, categoryInfo.categoryId);
         }
 
-        throw new Error(`Factory for type ${requestType} not found!`);
+        return this;
+    }
+
+    public createCategory(categoryName: string, forms: ApplicationFormFactoryCollection, categoryId: string = undefined) {
+        let category = new ApplicationFormCategory(categoryId, categoryName);
+        category.addRequest(forms);
+
+        this.categories[category.categoryId] = category;
+    }
+
+    public getReadApplicationForm(categoryId: string, formId: string, user: User) : AApplicationForm<unknown> {
+        let formFactory = this.getFormFactory(categoryId, formId);   
+        return new formFactory(getFullId(categoryId, formId), user);
+    }
+
+    public async getFullApplicationForm(categoryId: string, formId: string, user: User) : Promise<AApplicationForm<unknown>> {
+        let formFactory = this.getFormFactory(categoryId, formId);
+        return this.createInstance(formFactory, user, getFullId(categoryId, formId));
+    }
+
+    private getFormFactory(categoryId: string, formId: string) : ApplicationFormFactory {
+        let category = this.categories[categoryId];
+
+        if (category === undefined) {
+            throw new Error(`Category ${categoryId} not found!`);
+        }
+
+        let formFactory = category.getRequestFactory(formId);
+
+        if (formFactory === undefined) {
+            throw new Error(`Form ${formId} not found on category ${categoryId}`);
+        }
+
+        return formFactory;
     }
 
     public getOverview() : ApplicationFormOverview {
         let result: ApplicationFormOverview = {};
 
-        for (let category of this.categories) {
+        for (let category of Object.values(this.categories)) {
             let entrys: ApplicationFormRestMetadata[] = [];
             let elements = category.applicationForms;
 
@@ -61,8 +91,8 @@ export class ApplicationFormManager {
         return result;
     }
 
-    private async createInstance(fac: ApplicationFormFactory, user: User) : Promise<AApplicationForm<unknown>> {
-        let instance = new fac(user);
+    private async createInstance(fac: ApplicationFormFactory, user: User, fullFormId: string) : Promise<AApplicationForm<unknown>> {
+        let instance = new fac(fullFormId, user);
 
         let collectionName = instance.collectionName;
 

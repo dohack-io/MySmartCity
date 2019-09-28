@@ -1,9 +1,7 @@
 import AApplicationForm from "./AApplicationForm";
-import { type } from "os";
-import { Collection } from "mongodb";
 import User from "../user_management/User";
 
-export type ApplicationFormFactory = new (user: User) => AApplicationForm<unknown>;
+export type ApplicationFormFactory = new (fullFormId: string, user?: User) => AApplicationForm<unknown>;
 export type ApplicationFormFactoryCollection = { [requestTypeName: string]: ApplicationFormFactory };
 
 export class ApplicationFormCategory {
@@ -42,10 +40,6 @@ export class ApplicationFormCategory {
                 this.addRequest(key, requestTypeName[key]);
             }
         }
-    }
-
-    public hasRequestFactory(requestType: string) : boolean {
-        return this.requests[requestType] !== undefined;
     }
 
     public getRequestFactory(requestType: string) : ApplicationFormFactory {

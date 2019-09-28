@@ -23,8 +23,9 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
 
     public requestType: string;
 
-    constructor(user?: User) {
+    constructor(formId: string, user?: User) {
         this.user = user;
+        this.requestType = formId;
     }
 
     public bindCollection(collection: Collection) : void {
@@ -98,7 +99,7 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
 
     protected async saveToDatabase(data: T): Promise<void> {
         let saveData: T & GeneralRequest = this.extend(data, this.createGeneralRequest());
-        await this.collection.insert(saveData);
+        await this.collection.insertOne(saveData);
     }
 
     private extend<T, GeneralRequest>(data: T, general: GeneralRequest): T & GeneralRequest {
