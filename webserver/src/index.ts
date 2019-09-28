@@ -4,24 +4,9 @@ import { VenicleRegistration } from "./stadt_dortmund/applicationForms/VenicleRe
 import { DoUserManagement } from "./stadt_dortmund/DoUserManagement";
 import { Movement } from "./stadt_dortmund/applicationForms/Movement";
 import { NotificationManager } from "./smart_framework/notifications/NotificationManager";
-
-let manager = new ApplicationFormManager();
-manager.addCategories([
-    {
-        categoryId: "kfz",
-        categoryName: "Kraftfahrzeuge",
-        forms: {
-            "register": VenicleRegistration
-        }
-    },
-    {
-        categoryName: "Persönlich",
-        categoryId: "pers",
-        forms: {
-            "movement": Movement
-        }
-    }
-]);
+import CalendarManager from "./smart_framework/cityCalendar/CalendarManager";
+import { SimpleTrashCalendar } from "./stadt_dortmund/SimpleTrashCalendar";
+import { EventCalendar } from "./stadt_dortmund/EventCalendar";
 
 new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     .useCors()
@@ -30,5 +15,28 @@ new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
         new NotificationManager()
             .integrateApplicationForms()
     )
-    .useApplicationForms(manager)
+    .useCalendar(
+        new CalendarManager()
+            .addCalendarSource(SimpleTrashCalendar)
+            .addCalendarSource(EventCalendar)
+    )
+    .useApplicationForms(
+        new ApplicationFormManager()
+            .addCategories([
+                {
+                    categoryId: "kfz",
+                    categoryName: "Kraftfahrzeuge",
+                    forms: {
+                        "register": VenicleRegistration
+                    }
+                },
+                {
+                    categoryName: "Persönlich",
+                    categoryId: "pers",
+                    forms: {
+                        "movement": Movement
+                    }
+                }
+            ])
+    )
     .start();

@@ -34,7 +34,7 @@ export class Movement extends AApplicationForm<MovementData> {
                 label: "City"
             },
             {
-                type: "dateTime",
+                type: "date",
                 id: "date",
                 min: new Date(),
                 label: "Movement Date"

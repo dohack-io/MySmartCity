@@ -11,6 +11,8 @@ import SmartMiddleware from "./server/SmartMiddleware";
 import RequestExtention from "./RequestExtention";
 import { NotificationManager } from "./notifications/NotificationManager";
 import { NotificationsRoute } from "./server/NotificationsRoute";
+import CalendarManager from "./cityCalendar/CalendarManager";
+import { CalendarItemRoute } from "./server/CalendarItemRoute";
 
 export default class MySmartCityServer {
 
@@ -35,6 +37,12 @@ export default class MySmartCityServer {
 
     public useNotification(notificationManager: NotificationManager) : MySmartCityServer {
         let route = new NotificationsRoute(notificationManager);
+        route.mount(this.app);
+        return this;
+    }
+
+    public useCalendar(calendarManager: CalendarManager) : MySmartCityServer {
+        let route = new CalendarItemRoute(calendarManager);
         route.mount(this.app);
         return this;
     }
