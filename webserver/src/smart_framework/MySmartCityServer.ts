@@ -62,6 +62,11 @@ export default class MySmartCityServer {
         return this;
     }
 
+    public useStaticFile(path: string) : MySmartCityServer {
+        this.app.use(express.static(path));
+        return this;
+    }
+
     public start() : MySmartCityServer {
         this.app.listen(this.port, ()=>
             console.log(`Serving MySmartCity Server at Port ${this.port}`)

@@ -24,7 +24,7 @@ export class SimpleTrashCalendar extends ACalendarSource {
 
         items.forEach(c => {
             delete c._id;
-            response.addItems(c.category, c);
+            response.addItem(c.category, c);
         });
     }
 }

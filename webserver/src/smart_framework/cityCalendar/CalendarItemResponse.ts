@@ -13,13 +13,22 @@ export class CalendarItemResponse {
         this.categoricItems = new Map();
     }
 
-    public addItems(category: string, ...items: CalendarItem[]) : void {
+    public addItems(category: string, items: CalendarItem[]) : void {
         if (!this.categoricItems.has(category)) {
             this.categoricItems.set(category, items);
         }
         else {
             let target = this.categoricItems.get(category);
             items.forEach(i => target.push(i));
+        }
+    }
+
+    public addItem(category: string, item: CalendarItem) : void {
+        if (!this.categoricItems.has(category)) {
+            this.categoricItems.set(category, [item]);
+        }
+        else {
+            this.categoricItems.get(category).push(item);
         }
     }
 
