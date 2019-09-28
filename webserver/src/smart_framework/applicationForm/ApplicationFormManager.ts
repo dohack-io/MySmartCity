@@ -1,4 +1,4 @@
-import AApplicationForm from "./AApplicationForm";
+import { AApplicationForm } from "./AApplicationForm";
 import { ApplicationFormCategory, ApplicationFormFactory, ApplicationFormFactoryCollection } from "./ApplicationFormCategory";
 import { Collection, MongoClient, Db } from "mongodb";
 import { ApplicationFormRestMetadata } from "./ApplicationFormMetadata";
@@ -21,9 +21,7 @@ export type CategoryInformation = {
  */
 export class ApplicationFormManager {
 
-    private static DEFAULT_COLLECTION_NAME = "Requests";
-
-    public categories: {[categoryId: string]: ApplicationFormCategory};
+    public categories: { [categoryId: string]: ApplicationFormCategory };
 
     public constructor() {
         this.categories = {};
@@ -33,7 +31,7 @@ export class ApplicationFormManager {
      * Fügt meherere Kategorien dem Manager hinzu
      * @param collection Die Kategorien, welche hinzugefügt werden sollen
      */
-    public addCategories(collection: CategoryInformation[]) : ApplicationFormManager {
+    public addCategories(collection: CategoryInformation[]): ApplicationFormManager {
         for (let categoryInfo of collection) {
             this.createCategory(categoryInfo.categoryName, categoryInfo.forms, categoryInfo.categoryId);
         }
@@ -60,29 +58,18 @@ export class ApplicationFormManager {
      * @param formId Id des Antrags
      * @param user Der Nutzer, für den der Antrag hinzugefügt werden soll
      */
-    public getReadApplicationForm(categoryId: string, formId: string, user: User) : AApplicationForm<unknown> {
-        let formFactory = this.getFormFactory(categoryId, formId);   
-        return new formFactory(getFullId(categoryId, formId), user);
+    public getApplicationForm(database: Db, categoryId: string, formId: string, user: User): AApplicationForm<unknown> {
+        let formFactory = this.getFormFactory(categoryId, formId);
+        return new formFactory(database, getFullId(categoryId, formId), user);
     }
 
-    /**
-     * Gibt einen Antrag, welcher zum Speichern von Daten geeignet ist zurück
-     * @param categoryId Kategorie des Antrags
-     * @param formId Id des Antrags
-     * @param user Der Nutzer, für den der Antrag hinzugefügt werden soll
-     * @param database Datenbankverbindung
-     */
-    public async getFullApplicationForm(categoryId: string, formId: string, user: User, database: Db) : Promise<AApplicationForm<unknown>> {
-        let formFactory = this.getFormFactory(categoryId, formId);
-        return this.createInstance(formFactory, user, getFullId(categoryId, formId), database);
-    }
 
     /**
      * Sucht die Factory für den Antrag
      * @param categoryId KategorieId in der gesucht werden soll
      * @param formId Antragsid
      */
-    private getFormFactory(categoryId: string, formId: string) : ApplicationFormFactory {
+    private getFormFactory(categoryId: string, formId: string): ApplicationFormFactory {
         let category = this.categories[categoryId];
 
         if (category === undefined) {
@@ -101,7 +88,7 @@ export class ApplicationFormManager {
     /**
      * Gibt einen Überblick der vorhandenen Anträge zurück
      */
-    public getOverview() : ApplicationFormOverview {
+    public getOverview(database: Db): ApplicationFormOverview {
         let result: ApplicationFormOverview = {};
 
         for (let category of Object.values(this.categories)) {
@@ -110,7 +97,7 @@ export class ApplicationFormManager {
 
             for (let form of Object.keys(elements)) {
 
-                let infoInstance = new elements[form](null);
+                let infoInstance = new elements[form](database, null);
 
                 entrys.push({
                     applicationFormDescription: infoInstance.applicationFormDescription,
@@ -123,28 +110,5 @@ export class ApplicationFormManager {
         }
 
         return result;
-    }
-
-    /**
-     * Baut mit der Factory einen Antrag
-     * @param fac Factory des Antrages
-     * @param user Aktueller Nutzer
-     * @param fullFormId Volle ID des Antrags (kategorieId/antragId)
-     * @param database Datenbankverbindung
-     */
-    private async createInstance(fac: ApplicationFormFactory, user: User, fullFormId: string, database: Db) : Promise<AApplicationForm<unknown>> {
-        let instance = new fac(fullFormId, user);
-
-        let collectionName = instance.collectionName;
-
-        if (collectionName == null) {
-            collectionName = ApplicationFormManager.DEFAULT_COLLECTION_NAME;
-        }
-
-        instance.bindCollection(
-            await getCollection(database, collectionName)
-        );
-
-        return instance;
     }
 }

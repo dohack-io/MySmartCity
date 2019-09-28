@@ -1,4 +1,4 @@
-import AApplicationForm from "../../smart_framework/applicationForm/AApplicationForm";
+import { AApplicationForm } from "../../smart_framework/applicationForm/AApplicationForm";
 import { FormField } from "../../smart_framework/applicationForm/RequestField";
 
 interface VenicleData {
@@ -36,9 +36,4 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
     public async validate(userData: VenicleData): Promise<{ [key: string]: string; }> {
         return {};
     }
-
-    public get collectionName(): string {
-        return "venicle_requests";
-    }
-
 }
