@@ -6,6 +6,7 @@ import { Movement } from "./stadt_dortmund/applicationForms/Movement";
 import { NotificationManager } from "./smart_framework/notifications/NotificationManager";
 import CalendarManager from "./smart_framework/cityCalendar/CalendarManager";
 import { SimpleTrashCalendar } from "./stadt_dortmund/SimpleTrashCalendar";
+import { EventCalendar } from "./stadt_dortmund/EventCalendar";
 
 new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     .useCors()
@@ -17,6 +18,7 @@ new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     .useCalendar(
         new CalendarManager()
             .addCalendarSource(SimpleTrashCalendar)
+            .addCalendarSource(EventCalendar)
     )
     .useApplicationForms(
         new ApplicationFormManager()

@@ -1,5 +1,9 @@
 export interface CalendarItem {
     title: string;
     color: string;
-    date: Date;
+    start: Date;
+    end: Date;
+    tenative: boolean;
+    description?: string;
+    link?: string;
 }

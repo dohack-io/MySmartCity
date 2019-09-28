@@ -2,6 +2,8 @@ import IServerRoute from "./IServerRoute";
 import express from "express";
 import RequestExtention from "../RequestExtention";
 import CalendarManager from "../cityCalendar/CalendarManager";
+import { checkUser } from "../Utils";
+import { CalendarItem } from "../cityCalendar/CalendarItem";
 
 export class CalendarItemRoute implements IServerRoute {
 
@@ -16,7 +18,10 @@ export class CalendarItemRoute implements IServerRoute {
     }
 
     public async handle(req: RequestExtention, res: express.Response) : Promise<void> {
-        let events = await this.manager.getCalendarItems(req.database, req.user);
-        res.send(events);
+        let user = checkUser(req, res);
+
+        let calendarItemsResponse = await this.manager.getCalendarItems(req.database, user);
+
+        res.send(calendarItemsResponse.items);
     }
 }

@@ -3,6 +3,7 @@ import express from "express";
 import { ApplicationFormManager } from "../applicationForm/ApplicationFormManager";
 import { ApplicationFormRestMetadata } from "../applicationForm/ApplicationFormMetadata";
 import RequestExtention from "../RequestExtention";
+import { checkUser } from "../Utils";
 
 export type ApplicationFormOverview = {
     [categoryName: string] : ApplicationFormRestMetadata[]
@@ -30,8 +31,9 @@ export class ApplicationFormsRoute implements IServerRoute {
     async handleDetail(req: RequestExtention, res: express.Response) : Promise<void> {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
+        let user = checkUser(req, res);
         
-        let form = this.manager.getApplicationForm(req.database, categoryId, formId, req.user);
+        let form = this.manager.getApplicationForm(req.database, categoryId, formId, user);
 
         res.send(form.requestFields);
     }
@@ -39,8 +41,9 @@ export class ApplicationFormsRoute implements IServerRoute {
     async handleSubmit(req: RequestExtention, res: express.Response) : Promise<void> {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
+        let user = checkUser(req, res);
         
-        let form = this.manager.getApplicationForm(req.database, categoryId, formId, req.user);
+        let form = this.manager.getApplicationForm(req.database, categoryId, formId, user);
 
         let response = await form.processUserData(req.body);
         res.send(response);

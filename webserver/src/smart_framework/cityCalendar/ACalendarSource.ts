@@ -1,7 +1,7 @@
 import { DbTarget } from "../DbTarget";
 import { Db } from "mongodb";
-import { CalendarItem } from "./CalendarItem";
 import User from "../user_management/User";
+import { CalendarItemResponse } from "./CalendarItemResponse";
 
 export type CalendarSourceFactory = new (db: Db, user: User) => ACalendarSource;
 
@@ -14,6 +14,6 @@ export abstract class ACalendarSource extends DbTarget {
         this.user = user;
     }
 
-    public abstract getCalendarItems() : Promise<CalendarItem[]>;
+    public abstract addCalendarItems(response: CalendarItemResponse) : Promise<void>;
 
 }

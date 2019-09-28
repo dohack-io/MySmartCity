@@ -1,8 +1,7 @@
 import { CalendarSourceFactory, ACalendarSource } from "./ACalendarSource";
-import { CalendarItem } from "./CalendarItem";
 import { Db } from "mongodb";
-import { flatArray } from "../Utils";
 import User from "../user_management/User";
+import { CalendarItemResponse } from "./CalendarItemResponse";
 
 export default class CalendarManager {
     
@@ -17,13 +16,17 @@ export default class CalendarManager {
         return this;
     }
 
-    public async getCalendarItems(db: Db, user: User): Promise<CalendarItem[]> {
+    public async getCalendarItems(db: Db, user: User): Promise<CalendarItemResponse> {
+        let response = new CalendarItemResponse();
         let calendarItemsPromises = [];
+
         for (let source of this.getCalendarSources(db, user)) {
-            calendarItemsPromises.push( source.getCalendarItems() );
+            calendarItemsPromises.push( source.addCalendarItems(response) );
         }
 
-        return flatArray( await Promise.all(calendarItemsPromises) );
+        await Promise.all(calendarItemsPromises);
+
+        return response;
     }
 
     public getCalendarSources(db: Db, user: User) : ACalendarSource[] {

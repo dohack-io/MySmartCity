@@ -1,14 +1,20 @@
 import { ACalendarSource } from "../smart_framework/cityCalendar/ACalendarSource";
 import { CalendarItem } from "../smart_framework/cityCalendar/CalendarItem";
+import { CalendarItemResponse } from "../smart_framework/cityCalendar/CalendarItemResponse";
+
+interface TrashCalendarItem extends CalendarItem {
+    category: string;
+    _id?: string;
+}
 
 export class SimpleTrashCalendar extends ACalendarSource {
     
-    public async getCalendarItems(): Promise<CalendarItem[]> {
-        let collection = await this.getCollection<CalendarItem>("trash_calendar", false);
+    public async addCalendarItems(response: CalendarItemResponse): Promise<void> {
+        let collection = await this.getCollection<TrashCalendarItem>("trash_calendar", false);
 
         let items = await collection.find({
-            date: {
-                $gt: new Date()
+            start: {
+                $gte: new Date()
             }
         })
         .sort({
@@ -17,10 +23,8 @@ export class SimpleTrashCalendar extends ACalendarSource {
         .toArray();
 
         items.forEach(c => {
-            delete (c as any)._id;
+            delete c._id;
+            response.addItems(c.category, c);
         });
-
-        return items;
     }
-
 }

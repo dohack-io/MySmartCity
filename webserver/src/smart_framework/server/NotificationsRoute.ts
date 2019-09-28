@@ -2,6 +2,7 @@ import IServerRoute from "./IServerRoute";
 import express from "express";
 import RequestExtention from "../RequestExtention";
 import { NotificationManager } from "../notifications/NotificationManager";
+import { checkUser } from "../Utils";
 
 export class NotificationsRoute implements IServerRoute {
 
@@ -16,11 +17,7 @@ export class NotificationsRoute implements IServerRoute {
     }
 
     public async handle(req: RequestExtention, res: express.Response) : Promise<void> {
-        let user = req.user;
-        if (user == undefined) {
-            res.status(401)
-                .send("Not logged in");
-        }
+        let user = checkUser(req, res);
 
         res.send(
             await this.notificationManager.getNotifications(user, req.database)
