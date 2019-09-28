@@ -10,3 +10,14 @@ export async function getCollection<T = any>(database: Db, collectionName: strin
 
     return database.collection<T>(collectionName);
 }
+
+export function flatArray<T>(data: T[][]): T[] {
+    let result = [];
+    for (let a of data) {
+        for (let b of a) {
+            result.push(b);
+        } 
+    }
+
+    return result;
+}

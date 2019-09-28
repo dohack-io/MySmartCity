@@ -20,6 +20,13 @@ export type NumberField<T> = PlainFormField<T> & {
     placeholder?: number
 }
 
+export type DateField<T> = PlainFormField<T> & {
+    type: "date",
+    min?: Date,
+    max?: Date,
+    value?: Date
+}
+
 export type DateTimeField<T> = PlainFormField<T> & {
     type: "dateTime",
     min?: Date,
@@ -32,4 +39,4 @@ export type FileField<T> = PlainFormField<T> & {
     datatype?: string
 }
 
-export type FormField<T> = TextField<T> | NumberField<T> | DateTimeField<T> | FileField<T>;
+export type FormField<T> = TextField<T> | NumberField<T> | DateTimeField<T> | DateField<T> | FileField<T>;

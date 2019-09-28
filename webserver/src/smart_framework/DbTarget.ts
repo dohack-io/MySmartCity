@@ -10,7 +10,7 @@ export class DbTarget {
         this.db = db;
     }
 
-    protected async getCollection<T = any>(collectionName: string, create: boolean = true): Promise<Collection> {
+    protected async getCollection<T = any>(collectionName: string, create: boolean = true): Promise<Collection<T>> {
         return getCollection<T>(this.db, collectionName, create);
     }
 }
