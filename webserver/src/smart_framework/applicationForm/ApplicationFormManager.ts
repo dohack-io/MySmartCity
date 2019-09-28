@@ -5,6 +5,7 @@ import { ApplicationFormRestMetadata } from "./ApplicationFormMetadata";
 import User from "../user_management/User";
 import { ApplicationFormOverview } from "../server/ApplicationFormsRoute";
 import { getFullId } from "./Utils";
+import { getCollection } from "../Utils";
 
 export type CategoryInformation = {
     categoryName: string,
@@ -97,17 +98,9 @@ export class ApplicationFormManager {
         }
 
         instance.bindCollection(
-            await this.getCollection(database, collectionName)
+            await getCollection(database, collectionName)
         );
 
         return instance;
-    }
-
-    private async getCollection(database: Db, collectionName: string) : Promise<Collection> {
-        try {
-            await database.createCollection(collectionName);
-        } catch (e) {}
-
-        return database.collection(collectionName);
     }
 }

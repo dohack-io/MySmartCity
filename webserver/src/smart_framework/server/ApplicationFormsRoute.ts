@@ -27,16 +27,11 @@ export class ApplicationFormsRoute implements IServerRoute {
         res.send(overview);
     }
 
-    async handleDetail(req: express.Request, res: express.Response) : Promise<void> {
+    async handleDetail(req: RequestExtention, res: express.Response) : Promise<void> {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
         
-        let form = this.manager.getReadApplicationForm(categoryId, formId, {
-            firstName: "Tim",
-            lastName: "Ittermann",
-            userId: "abc13214654",
-            email: "tim.ittermann@gmail.com"
-        });
+        let form = this.manager.getReadApplicationForm(categoryId, formId, req.user);
 
         res.send(form.requestFields);
     }
@@ -45,12 +40,7 @@ export class ApplicationFormsRoute implements IServerRoute {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
         
-        let form = await this.manager.getFullApplicationForm(categoryId, formId, {
-            firstName: "Tim",
-            lastName: "Ittermann",
-            userId: "abc13214654",
-            email: "tim.ittermann@gmail.com"
-        }, await req.database());
+        let form = await this.manager.getFullApplicationForm(categoryId, formId, req.user, await req.database());
 
         let response = await form.processUserData(req.body);
         res.send(response);

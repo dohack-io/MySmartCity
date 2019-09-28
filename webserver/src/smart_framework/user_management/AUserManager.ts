@@ -1,14 +1,16 @@
 import User from "./User";
-import { Collection } from "mongodb";
+import { Collection, Db } from "mongodb";
 
 export default abstract class AUserManager {
 
-    protected collection: Collection;
+    protected userCollectionName: string;
+    protected tokenCollectionName: string;
 
-    public constructor(collection: Collection) {
-        this.collection = collection;
+    public constructor(userCollectionName: string, tokenCollectionName: string) {
+        this.userCollectionName = userCollectionName;
+        this.tokenCollectionName = tokenCollectionName;
     }
 
-    public abstract getUserFromCookie(cookie: string): Promise<User>;
-    public abstract login(username: string, password: string): Promise<User>;
+    public abstract getUserFromCookie(database: Db, cookie: string): Promise<User>;
+    public abstract login(database: Db, username: string, password: string): Promise<User>;
 }

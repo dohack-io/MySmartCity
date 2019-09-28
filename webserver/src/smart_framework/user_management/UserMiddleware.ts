@@ -14,25 +14,27 @@ export class UserMiddleware {
         this.handle = this.handle.bind(this);
     }
 
-    public async handle(req: express.Request, res: express.Response, next: express.NextFunction) : Promise<void> {
+    public async handle(req: RequestExtention, res: express.Response, next: express.NextFunction) : Promise<void> {
+        let token: string;
+
         if (req.cookies[UserMiddleware.COOKIE_NAME] !== undefined) {
-            await this.addUserFromCookie(req);
+            token = req.cookies[UserMiddleware.COOKIE_NAME]
         }
+        else if (req.header("X-Token") !== undefined) {
+            token = req.header("X-Token");
+        }
+        // Testfall: Default User
         else {
-            (req as any)["user"]  = {
-                firstName: "Max",
-                lastName: "Mustermann",
-                userId: "abcd",
-                email: "max@mustermann.de"
-            };
+            token = "default";
         }
 
+        await this.addUserFromCookie(req, token);
+        
         next();
     }
 
-    private async addUserFromCookie(req: express.Request) {
-        let token = req.cookies[UserMiddleware.COOKIE_NAME];
-        let user = await this.userManager.getUserFromCookie(token);
+    private async addUserFromCookie(req: RequestExtention, token: string) {
+        let user = await this.userManager.getUserFromCookie(await req.database(), token);
         (req as RequestExtention).user = user;
     }
 

@@ -8,6 +8,7 @@ import AUserManager from "./user_management/AUserManager";
 import { UserMiddleware } from "./user_management/UserMiddleware";
 import { Db, MongoClient } from "mongodb";
 import SmartMiddleware from "./server/SmartMiddleware";
+import RequestExtention from "./RequestExtention";
 
 export default class MySmartCityServer {
 
@@ -40,6 +41,9 @@ export default class MySmartCityServer {
         this.app.use(
             (new UserMiddleware(userManager)).handle
         );
+        this.app.get("/me", (req: RequestExtention, res)=>{
+            res.send(req.user);
+        })
         return this;
     }
 
