@@ -1,7 +1,8 @@
-import AApplicationForm from "./AApplicationForm";
+import { AApplicationForm } from "./AApplicationForm";
 import User from "../user_management/User";
+import { Db } from "mongodb";
 
-export type ApplicationFormFactory = new (fullFormId: string, user?: User) => AApplicationForm<any>;
+export type ApplicationFormFactory = new (database: Db, fullFormId: string, user?: User) => AApplicationForm<any>;
 export type ApplicationFormFactoryCollection = { [requestTypeName: string]: ApplicationFormFactory };
 
 export class ApplicationFormCategory {

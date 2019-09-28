@@ -17,7 +17,8 @@
         "express": "4.17.1",
         "moment": "2.24.0",
         "mongodb": "3.3.2",
-        "node-fetch": "2.6.0"
+        "node-fetch": "2.6.0",
+        "string-format": "2.0.0"
     },
     "devDependencies": {
         "@types/cookie-parser": "^1.4.2",
@@ -25,6 +26,7 @@
         "@types/mongodb": "3.1.31",
         "@types/node": "12.7.8",
         "@types/cors": "2.8.6",
+        "@types/string-format": "2.0.0",
         "ts-node": "^8.3.0",
         "typescript": "^3.5.2"
     }

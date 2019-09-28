@@ -22,8 +22,8 @@ export class ApplicationFormsRoute implements IServerRoute {
         app.post("/applicationForms/:categoryId/:formId", this.handleSubmit.bind(this));
     }
 
-    async handleOverview(req: express.Request, res: express.Response) : Promise<void> {
-        let overview = this.manager.getOverview();
+    async handleOverview(req: RequestExtention, res: express.Response) : Promise<void> {
+        let overview = this.manager.getOverview(req.database);
         res.send(overview);
     }
 
@@ -31,7 +31,7 @@ export class ApplicationFormsRoute implements IServerRoute {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
         
-        let form = this.manager.getReadApplicationForm(categoryId, formId, req.user);
+        let form = this.manager.getApplicationForm(req.database, categoryId, formId, req.user);
 
         res.send(form.requestFields);
     }
@@ -40,7 +40,7 @@ export class ApplicationFormsRoute implements IServerRoute {
         let categoryId = req.params["categoryId"];
         let formId = req.params["formId"];
         
-        let form = await this.manager.getFullApplicationForm(categoryId, formId, req.user, await req.database());
+        let form = this.manager.getApplicationForm(req.database, categoryId, formId, req.user);
 
         let response = await form.processUserData(req.body);
         res.send(response);

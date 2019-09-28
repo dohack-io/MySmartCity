@@ -1,4 +1,4 @@
-import AApplicationForm from "../../smart_framework/applicationForm/AApplicationForm";
+import { AApplicationForm } from "../../smart_framework/applicationForm/AApplicationForm";
 import { FormField } from "../../smart_framework/applicationForm/RequestField";
 
 interface MovementData {
@@ -60,8 +60,7 @@ export class Movement extends AApplicationForm<MovementData> {
             && tData.postalCode !== undefined
             && tData.street !== undefined;
     }
-
-    public collectionName: string = "movement_requests";
+    
     public applicationFormDescription = "Umziehen";
     public applicationFormTitle = "Umzug melden";
 }

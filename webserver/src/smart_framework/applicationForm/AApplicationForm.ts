@@ -1,7 +1,8 @@
 import { FormField } from "./RequestField";
-import { Collection } from "mongodb";
+import { Collection, Db } from "mongodb";
 import User from "../user_management/User";
 import { ApplicationFormMetadata } from "./ApplicationFormMetadata";
+import { DbTarget } from "../DbTarget";
 
 type UserSubmitedData = { [key: string]: any };
 type ValidateResponse = { [key: string]: string };
@@ -9,31 +10,30 @@ type ValidateResponse = { [key: string]: string };
 /**
  * Daten welcher jeder Antrag hat
  */
-type GeneralRequest = {
+export type GeneralRequest = {
     id?: string;
     userId: string;
     requestType: string;
     created: Date;
-    state: "OPEN" | "CLOSED" | "ACCEPTED";
+    lastChange: Date;
+    state: "Open" | "Closed" | "Acceped" | "In Progress";
 }
 
 /**
  * Stellt einen Antrag dar
  */
-export default abstract class AApplicationForm<T> implements ApplicationFormMetadata {
+export abstract class AApplicationForm<T> extends DbTarget implements ApplicationFormMetadata {
 
-    private collection: Collection;
+    public static readonly COLLECTION_NAME = "Requests";
+
     private user?: User;
 
     public requestType: string;
 
-    constructor(formId: string, user?: User) {
+    constructor(database: Db, formId: string, user?: User) {
+        super(database);
         this.user = user;
         this.requestType = formId;
-    }
-
-    public bindCollection(collection: Collection): void {
-        this.collection = collection;
     }
 
     /**
@@ -52,12 +52,6 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
      * @param data User Data
      */
     public abstract validateDataType(data: any): data is T;
-
-    /**
-     * Gibt den Namen für die Collection in der diese Anträge gespeichert werden zurück
-     * null wenn die Standart Collection genutzt werden soll
-     */
-    public abstract get collectionName(): string | null;
 
     /**
      * Gibt eine Beschreibung des Antrags zurück
@@ -101,14 +95,16 @@ export default abstract class AApplicationForm<T> implements ApplicationFormMeta
         return {
             created: new Date(),
             requestType: this.requestType,
-            state: "OPEN",
+            state: "Open",
+            lastChange: new Date(),
             userId: this.user.userId
         };
     }
 
     protected async saveToDatabase(data: T): Promise<void> {
         let saveData: T & GeneralRequest = this.extend(data, this.createGeneralRequest());
-        await this.collection.insertOne(saveData);
+        let collection = await this.getCollection<T & GeneralRequest>(AApplicationForm.COLLECTION_NAME);
+        await collection.insertOne(saveData);
     }
 
     /**
