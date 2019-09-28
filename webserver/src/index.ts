@@ -1,7 +1,12 @@
-import express from "express";
+import { ApplicationFormManager } from "./smart_framework/applicationForm/ApplicationFormManager";
+import MySmartCityServer from "./smart_framework/MySmartCityServer";
+import { VenicleRegistration } from "./stadt_dortmund/applicationForms/VenicleRegistration";
 
-let app = express();
+let manager = new ApplicationFormManager("mongodb://localhost:27017", "mysmartcity");
+manager.createCategory("KFZ", {
+    "register": VenicleRegistration
+});
 
-app.get("/", (req,res) => res.send("Hello World!"));
-
-app.listen(3000, ()=>console.log("Server up at 3000"));
+let server = new MySmartCityServer(3000);
+server.useApplicationForms(manager);
+server.start();

@@ -1,6 +1,7 @@
 import { FormField } from "./RequestField";
 import { Collection } from "mongodb";
-import User from "./user_management/User";
+import User from "../user_management/User";
+import { ApplicationFormMetadata } from "./ApplicationFormMetadata";
 
 type UserSubmitedData = { [key: string]: any };
 type ValidateResponse = { [key: string]: string };
@@ -15,14 +16,14 @@ type GeneralRequest = {
 /**
  * Stellt einen Antrag dar
  */
-export default abstract class AApplicationForm<T> {
+export default abstract class AApplicationForm<T> implements ApplicationFormMetadata {
 
     private collection: Collection;
-    private user: User;
+    private user?: User;
 
     public requestType: string;
 
-    constructor(user: User) {
+    constructor(user?: User) {
         this.user = user;
     }
 
@@ -40,12 +41,32 @@ export default abstract class AApplicationForm<T> {
      * @param userData Daten, welche der Nutzer eingegeben hat
      */
     public abstract validate(userData: T): Promise<ValidateResponse>;
-    public abstract get dataTypeValidator(): (data: any) => data is T;
+
+    /**
+     * Prüft ob der Datentyp der Daten, welcher der Nutzer übermittelt hat zu den geforderten passt
+     * @param data User Data
+     */
+    public abstract validateDataType(data: any): data is T;
+
+    /**
+     * Gibt den Namen für die Collection in der diese Anträge gespeichert werden zurück
+     * null wenn die Standart Collection genutzt werden soll
+     */
     public abstract get collectionName(): string | null;
+
+    /**
+     * Gibt eine Beschreibung des Antrags zurück
+     */
+    public abstract get applicationFormDescription(): string;
+
+    /**
+     * Gibt den Titel des Antrags zurück
+     */
+    public abstract get applicationFormTitle(): string;
 
     public async processUserData(data: UserSubmitedData): Promise<ValidateResponse | void> {
         // Userdaten entsprechen gefordertes Format
-        if (this.dataTypeValidator(data)) {
+        if (this.validateDataType(data)) {
             let validateCallback = await this.validate(data);
 
             // Sind Daten valide?
