@@ -38,8 +38,8 @@
 				<footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Accept" text="{i18n>save}" press="OnSave"/>
-				<Button type="Reject" text="{i18n>cancel}" press="OnCancel"/>
+				<Button type="Accept" text="{i18n>save}" press="onSave"/>
+				<Button type="Reject" text="{i18n>cancel}" press="onCancel"/>
 			</OverflowToolbar>
 		</footer>
 	</Page>
