@@ -36,7 +36,7 @@ sap.ui.define([
 
         getApplicationForm: function (fullFormId) {
             return this._fetch("/applicationForms/" + fullFormId);
-        }
+        },
 
         submitApplicationForm: function (fullFormId, data) {
             return this._fetch("/applicationForms/" + fullFormId, "POST", data);
