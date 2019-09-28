@@ -6,9 +6,13 @@
 	xmlns:f="sap.ui.layout.form" 
 	xmlns:core="sap.ui.core" 
 	xmlns:u="sap.ui.unified">
-	<Page id="page" title="{i18n>titleStart}">
-	 	<Tree
-		    id="tree">
+	<Page id="page" 
+		title="{i18n>titleStart}">
+		<Tree id="Tree" 
+			mode="SingleSelectMaster"
+			selectionChange="onMenuSelChanged"
+			items="{path: 'formModel>/'}">
+			<StandardTreeItem title="{formModel>text}"/>
 		</Tree>
 	</Page>
 </mvc:View>

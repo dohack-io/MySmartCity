@@ -3,13 +3,13 @@ sap.ui.define([
 ], function (Object) {
     "use strict";
 
-    return Controller.extend("sap.ui.demo.basicTemplate.utils.APIManager", {
+    return Object.extend("sap.ui.demo.basicTemplate.utils.APIManager", {
 
         constructor: function (baseUrl) {
             this.baseUrl = baseUrl;
         },
 
-        _fetch: function (sUrl, sMethod, oBody) {
+        _fetch: async function (sUrl, sMethod, oBody) {
             var useData = undefined;
             var headers = {};
 
@@ -22,12 +22,11 @@ sap.ui.define([
                 headers["Content-Type"] = "application/json";
             }
 
-            return fetch({
-                url: this.baseUrl,
+            return (await fetch(this.baseUrl+sUrl, {
                 method: sMethod,
                 headers,
                 body: useData
-            });
+            })).json();
         },
 
         getApplicationFormTree: function () {
