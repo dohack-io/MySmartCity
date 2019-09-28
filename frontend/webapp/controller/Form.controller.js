@@ -45,6 +45,7 @@ sap.ui.define([
 			this.oForm = this.getView().byId("FormContainer");
 			this.sFullName = oArgs.categoryid + "/" + oArgs.formid;
 			this.loadData(this.sFullName);
+			var oTitle = this.getView().byId("title");
 
 		},
 
