@@ -1,14 +1,14 @@
-import ARequest from "./ARequest";
+import AApplicationForm from "./AApplicationForm";
 import { type } from "os";
 import { Collection } from "mongodb";
 import User from "./user_management/User";
 
-export type RequestFactory = new (user: User) => ARequest<unknown>;
-type RequestFactoryCollection = { [requestTypeName: string]: RequestFactory };
+export type ApplicationFormFactory = new (user: User) => AApplicationForm<unknown>;
+type ApplicationFormFactoryCollection = { [requestTypeName: string]: ApplicationFormFactory };
 
-export class RequestCategory {
+export class ApplicationFormCategory {
 
-    private requests: RequestFactoryCollection;
+    private requests: ApplicationFormFactoryCollection;
     private _categoryName: string;
 
     public get categoryName(): string { return this._categoryName; }
@@ -19,8 +19,8 @@ export class RequestCategory {
     }
 
     public addRequest(
-        requestTypeName: string | RequestFactoryCollection,
-        requestFactory?: RequestFactory
+        requestTypeName: string | ApplicationFormFactoryCollection,
+        requestFactory?: ApplicationFormFactory
     ): void {
 
         if (typeof(requestTypeName) == "string") {
@@ -41,7 +41,7 @@ export class RequestCategory {
         return this.requests[requestType] !== undefined;
     }
 
-    public getRequestFactory(requestType: string) : RequestFactory {
+    public getRequestFactory(requestType: string) : ApplicationFormFactory {
         return this.requests[requestType];
     }
 }

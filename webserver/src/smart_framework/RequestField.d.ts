@@ -1,4 +1,4 @@
-export type PlainRequestField = {
+export type PlainFormField = {
     requestId?: string,
     userId?: string,
     id: string,
@@ -6,30 +6,30 @@ export type PlainRequestField = {
     type: string
 };
 
-export type TextField = PlainRequestField & {
+export type TextField = PlainFormField & {
     type: "text",
     maxLength?: number,
     masked?: string,
     placeholder?: string
 }
 
-export type NumberField = PlainRequestField & {
+export type NumberField = PlainFormField & {
     type: "number",
     min?: number,
     max?: number,
     placeholder?: number
 }
 
-export type DateTimeField = PlainRequestField & {
+export type DateTimeField = PlainFormField & {
     type: "dateTime",
     min?: Date,
     max?: Date,
     value?: Date
 }
 
-export type FileField = PlainRequestField & {
+export type FileField = PlainFormField & {
     type: "file",
     datatype?: string
 }
 
-export type RequestField = TextField | NumberField | DateTimeField | FileField;
+export type FormField = TextField | NumberField | DateTimeField | FileField;

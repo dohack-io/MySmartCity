@@ -1,4 +1,4 @@
-import { RequestField } from "./RequestField";
+import { FormField } from "./RequestField";
 import { Collection } from "mongodb";
 import User from "./user_management/User";
 
@@ -15,7 +15,7 @@ type GeneralRequest = {
 /**
  * Stellt einen Antrag dar
  */
-export default abstract class ARequest<T> {
+export default abstract class AApplicationForm<T> {
 
     private collection: Collection;
     private user: User;
@@ -33,7 +33,7 @@ export default abstract class ARequest<T> {
     /**
      * Gibt die Felder die für diesen Antrag benötigt werden zurück
      */
-    public abstract get requestFields(): RequestField[];
+    public abstract get requestFields(): FormField[];
 
     /**
      * Daten des Nutzers

@@ -1,22 +1,22 @@
-import ARequest from "./ARequest";
-import { RequestCategory, RequestFactory } from "./RequestCategory";
+import AApplicationForm from "./AApplicationForm";
+import { ApplicationFormCategory, ApplicationFormFactory } from "./ApplicationFormCategory";
 import { Collection, MongoClient, Db } from "mongodb";
 import User from "./user_management/User";
 
-export class RequestManager {
+export class ApplicationFormManager {
 
     private static DEFAULT_COLLECTION_NAME = "Requests";
     
     private dbConnectionUri: string;
     private databaseName: string;
-    public categories: RequestCategory[];
+    public categories: ApplicationFormCategory[];
 
     public constructor(dbConnectionUri: string, dbName: string) {
         this.dbConnectionUri = dbConnectionUri;
         this.databaseName = dbName;
     }
 
-    public async createRequest(requestType: string, user: User): Promise<ARequest<unknown>> {
+    public async createRequest(requestType: string, user: User): Promise<AApplicationForm<unknown>> {
        
         for (let category of this.categories) {
             if (category.hasRequestFactory(requestType)) {
@@ -28,13 +28,13 @@ export class RequestManager {
         throw new Error(`Factory for type ${requestType} not found!`);
     }
 
-    private async createInstance(fac: RequestFactory, user: User) : Promise<ARequest<unknown>> {
+    private async createInstance(fac: ApplicationFormFactory, user: User) : Promise<AApplicationForm<unknown>> {
         let instance = new fac(user);
 
         let collectionName = instance.collectionName;
 
         if (collectionName == null) {
-            collectionName = RequestManager.DEFAULT_COLLECTION_NAME;
+            collectionName = ApplicationFormManager.DEFAULT_COLLECTION_NAME;
         }
 
         instance.bindCollection(
