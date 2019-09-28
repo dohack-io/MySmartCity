@@ -15,23 +15,19 @@ This is a template, please fill it with your teams data. Places to fill in data 
 
 ## About your team
 
-### Team rku.it
+### **Team RKU**
 
-#### Members:
-
-1. Team Captain: 
- * Name: Tim Ittermann
+**Team Captain Tim Ittermann**
  * Age: 23 years old
  * Living place: Herne⋅
- * Employer: rku.it Gmbh/Herne
+ * Employer: [Rku.It](http://www.rku-it.de)/Herne
  * Position: Dual Student Software Engineering  at TU Dortmund
  * Development experience:
 
-2. Team Assistent: 
- * Name: Sven Treutler
+**Team Assistant Sven Treutler**
  * Age: 30 years old
  * Living place: Herne
- * Employer: rku.it Gmbh/Herne
+ * Employer: [Rku.It](http://www.rku-it.de)/Herne
  * Position: Senior Developer 
  * Development experience: Java/ABAP/UI5
 
