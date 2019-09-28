@@ -15,18 +15,23 @@
 					class="columns" 
 					alignItems="Stretch">
 					<items>
-						<Tree headerText="Antragsformulare" id="Tree" 
+						<Tree headerText="Antragsformulare" 
+							id="Tree" 
 							mode="SingleSelectMaster" 
 							selectionChange="onMenuSelChanged" 
 							items="{path: 'formModel>/'}">
 							<StandardTreeItem title="{formModel>text}"/>
 						</Tree>
-						<Text class="column2" 
-							text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo hey nonny no duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.">
-							<layoutData>
-								<FlexItemData growFactor="1" />
-							</layoutData>
-						</Text>
+						<List id="list" 
+							headerText="Feed Entries" 
+							items="{listModel>/}">
+							<FeedListItem sender="{listModel>title}" 
+								icon="{listModel>icon}" 
+								iconDensityAware="false" 
+								timestamp="{listModel>date}" 
+								text="{listModel>content}">
+							</FeedListItem>
+						</List>
 					</items>
 				</FlexBox>
 
