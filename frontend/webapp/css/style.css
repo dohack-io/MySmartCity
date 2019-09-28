@@ -1,1 +1,9 @@
-/* add your custom styles here */
+.equalColumns .columns {
+	height: 50%;
+}
+
+.equalColumns .columns .sapMFlexItem {
+	width: 50%;
+	margin: 0 5px 0 0;
+	padding: 10px;
+}

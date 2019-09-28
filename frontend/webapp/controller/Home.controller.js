@@ -13,15 +13,18 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function () {
+			this.getOwnerComponent().getRouter().getRoute("home").attachPatternMatched(this.onRouteMatched.bind(this), this);
 
-			this.APIManager = new APIManager("http://10.4.1.121:3000");
-			this.formModel = new JSONModel({});
-			this.getOwnerComponent().setModel(this.formModel, "formModel");
-			this.loadData();
 
 
 		},
-
+		
+		onRouteMatched: function (oEvent) {
+			this.APIManager = new APIManager("http://10.4.1.121:3000");
+			this.treeModel = new JSONModel({});
+			this.getOwnerComponent().setModel(this.treeModel, "formModel");
+			this.loadData();
+		},
 
 
 		loadData: async function () {
@@ -43,23 +46,26 @@ sap.ui.define([
 				result.push(item);
 			}
 
-			this.formModel.setData(result);
+			this.treeModel.setData(result);
 		},
 
 		onMenuSelChanged: function (oEvent) {
 			var oSelectedContext = oEvent.getParameter("listItem");
 			var sTitle = oSelectedContext.getTitle();
 			var sFullName;
-			var oModelData = this.formModel.getData();
+			var oModelData = this.treeModel.getData();
 			oModelData.forEach(function (oData) {
 				oData.nodes.forEach(function (oNode) {
 					if (sTitle === oNode.text) {
 						sFullName = oNode.fullName;
 					}
-				
+
 				});
 			});
-			
+			if (sFullName) {
+				location.hash = "#form/" + sFullName;
+			}
+
 		}
 
 	});
