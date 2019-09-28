@@ -34,7 +34,31 @@
 						</List>
 					</items>
 				</FlexBox>
-
+				<FlexBox width="95%" 
+					class="columns" 
+					alignItems="Stretch">
+					<items>
+						<PlanningCalendar id="pc" 
+							rows="{calendarModel>/}">
+							<rows>
+								<PlanningCalendarRow title="{calendarModel>categoryName}" 
+								appointments="{path : 'calendarModel>events', templateShareable: 'true'}">
+									<appointments>
+										<u:CalendarAppointment startDate="{calendarModel>start}" 
+											endDate="{calendarModel>end}" 
+											color="{calendarModel>color}" 
+											icon="{pic}" 
+											title="{calendarModel>title}" 
+											text="{calendarModel>description}" 
+											type="{type}" 
+											tentative="{calendarModel>tenative}">
+										</u:CalendarAppointment>
+									</appointments>
+								</PlanningCalendarRow>
+							</rows>
+						</PlanningCalendar>
+					</items>
+				</FlexBox>
 			</l:content>
 		</l:VerticalLayout>
 

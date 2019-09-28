@@ -43,6 +43,10 @@ sap.ui.define([
 
         getNotifications: function () {
             return this._fetch("/notifications");
+        },
+
+        getCalendarDates: function () {
+            return this._fetch("/calendar");
         }
 
     });
