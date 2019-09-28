@@ -14,7 +14,7 @@ export class DoUserManagement extends AUserManager {
         });
     }
 
-    public async getUserFromCookie(database: Db, cookie: string): Promise<User> {
+    public async getUserFromToken(database: Db, cookie: string): Promise<User> {
         let collection = await getCollection<Token>(database, this.tokenCollectionName, false);
 
         let find = await collection.findOne({

@@ -18,23 +18,22 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
             tData.fgn !== undefined;
     }
 
-    public get requestFields(): FormField[] {
+    public get requestFields(): FormField<VenicleData>[] {
         return [
             {
                 type: "text",
                 id: "kennz",
-                label: "Wunschkennzeichen"
+                label: "Number Plate"
             },
             {
                 type: "text",
                 id: "fgn",
-                label: "Fahrgestellnummer des Fahrzeuges"
+                label: "Chassis Number"
             }
         ];
     }
 
     public async validate(userData: VenicleData): Promise<{ [key: string]: string; }> {
-        console.log("Fancy validation");
         return {};
     }
 

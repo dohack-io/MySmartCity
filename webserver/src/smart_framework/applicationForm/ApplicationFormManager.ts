@@ -7,12 +7,18 @@ import { ApplicationFormOverview } from "../server/ApplicationFormsRoute";
 import { getFullId } from "./Utils";
 import { getCollection } from "../Utils";
 
+/**
+ * Informationen für eine Kategorie
+ */
 export type CategoryInformation = {
     categoryName: string,
     categoryId: string,
     forms: ApplicationFormFactoryCollection
 }
 
+/**
+ * Enthält alle Anträge die von dem Server bearbeitet werden können
+ */
 export class ApplicationFormManager {
 
     private static DEFAULT_COLLECTION_NAME = "Requests";
@@ -23,6 +29,10 @@ export class ApplicationFormManager {
         this.categories = {};
     }
 
+    /**
+     * Fügt meherere Kategorien dem Manager hinzu
+     * @param collection Die Kategorien, welche hinzugefügt werden sollen
+     */
     public addCategories(collection: CategoryInformation[]) : ApplicationFormManager {
         for (let categoryInfo of collection) {
             this.createCategory(categoryInfo.categoryName, categoryInfo.forms, categoryInfo.categoryId);
@@ -31,6 +41,12 @@ export class ApplicationFormManager {
         return this;
     }
 
+    /**
+     * Erstellt eine neue Kategorie im Manager
+     * @param categoryName Name der neuen Kategorie
+     * @param forms Anträge, welche diese Kategorie enthalten soll
+     * @param categoryId ID der Kategorie
+     */
     public createCategory(categoryName: string, forms: ApplicationFormFactoryCollection, categoryId: string = undefined) {
         let category = new ApplicationFormCategory(categoryId, categoryName);
         category.addRequest(forms);
@@ -38,16 +54,34 @@ export class ApplicationFormManager {
         this.categories[category.categoryId] = category;
     }
 
+    /**
+     * Gibt einen Antrag, welcher zum Lesen von Metadaten ausgeprägt ist zurück
+     * @param categoryId Kategorie des Antrags
+     * @param formId Id des Antrags
+     * @param user Der Nutzer, für den der Antrag hinzugefügt werden soll
+     */
     public getReadApplicationForm(categoryId: string, formId: string, user: User) : AApplicationForm<unknown> {
         let formFactory = this.getFormFactory(categoryId, formId);   
         return new formFactory(getFullId(categoryId, formId), user);
     }
 
+    /**
+     * Gibt einen Antrag, welcher zum Speichern von Daten geeignet ist zurück
+     * @param categoryId Kategorie des Antrags
+     * @param formId Id des Antrags
+     * @param user Der Nutzer, für den der Antrag hinzugefügt werden soll
+     * @param database Datenbankverbindung
+     */
     public async getFullApplicationForm(categoryId: string, formId: string, user: User, database: Db) : Promise<AApplicationForm<unknown>> {
         let formFactory = this.getFormFactory(categoryId, formId);
         return this.createInstance(formFactory, user, getFullId(categoryId, formId), database);
     }
 
+    /**
+     * Sucht die Factory für den Antrag
+     * @param categoryId KategorieId in der gesucht werden soll
+     * @param formId Antragsid
+     */
     private getFormFactory(categoryId: string, formId: string) : ApplicationFormFactory {
         let category = this.categories[categoryId];
 
@@ -64,6 +98,9 @@ export class ApplicationFormManager {
         return formFactory;
     }
 
+    /**
+     * Gibt einen Überblick der vorhandenen Anträge zurück
+     */
     public getOverview() : ApplicationFormOverview {
         let result: ApplicationFormOverview = {};
 
@@ -88,6 +125,13 @@ export class ApplicationFormManager {
         return result;
     }
 
+    /**
+     * Baut mit der Factory einen Antrag
+     * @param fac Factory des Antrages
+     * @param user Aktueller Nutzer
+     * @param fullFormId Volle ID des Antrags (kategorieId/antragId)
+     * @param database Datenbankverbindung
+     */
     private async createInstance(fac: ApplicationFormFactory, user: User, fullFormId: string, database: Db) : Promise<AApplicationForm<unknown>> {
         let instance = new fac(fullFormId, user);
 

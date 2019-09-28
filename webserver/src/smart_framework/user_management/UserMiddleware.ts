@@ -34,7 +34,7 @@ export class UserMiddleware {
     }
 
     private async addUserFromCookie(req: RequestExtention, token: string) {
-        let user = await this.userManager.getUserFromCookie(await req.database(), token);
+        let user = await this.userManager.getUserFromToken(await req.database(), token);
         (req as RequestExtention).user = user;
     }
 
