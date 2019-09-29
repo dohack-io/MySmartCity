@@ -50,6 +50,7 @@ sap.ui.define([
 		},
 
 		loadData: async function (isURL) {
+			this.pendingUpload = false;
 			this.getView().byId("FormContainer").destroyFormElements();
 			var data = await this.APIManager.getApplicationForm(isURL);
 			var that = this;
@@ -66,7 +67,7 @@ sap.ui.define([
 						break;
 
 					case Constants.DATETIME:
-						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, oElement.min,oElement.max));
+						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, oElement.min, oElement.max));
 						break;
 
 					case Constants.DATE:
@@ -108,6 +109,7 @@ sap.ui.define([
 
 		uploadComplete: function (oEvent) {
 			var sResponse = oEvent.getParameter("response");
+			this._finializeForm();
 		},
 
 		addDateTimeInput: function (isID, isLabel, isPlaceholder, isMinDate, isMaxDate) {
@@ -128,7 +130,7 @@ sap.ui.define([
 			return newFormElement;
 		},
 
-		_applyMinMaxDates: function(fieldElement, min, max){
+		_applyMinMaxDates: function (fieldElement, min, max) {
 			if (min) {
 				fieldElement.setMinDate(new Date(min));
 			}
@@ -147,12 +149,17 @@ sap.ui.define([
 			var aErrorData = await this.APIManager.submitApplicationForm(this.sFullName, iaData);
 			if (Object.keys(aErrorData.validate).length != 0) {
 				this.setErrorData(aErrorData);
-			} else {
-				var msg = 'Application Form is send';
-				MessageToast.show(msg);
-				setTimeout('', 5000);
-				this.getBack();
+			} 
+			else if (!this.pendingUpload) {
+				this._finializeForm();
 			}
+		},
+
+		_finializeForm: function () {
+			var msg = 'Application Form is send';
+			MessageToast.show(msg);
+			setTimeout('', 5000);
+			this.getBack();
 		},
 
 		setErrorData: function (aErrorData) {
@@ -170,10 +177,10 @@ sap.ui.define([
 			});
 		},
 
-		uploadData: function(requestId){
+		uploadData: function (requestId) {
 			var that = this;
-			this.fileUploaders.forEach(function(fileUploader){
-				fileUploader.setUploadUrl(that.APIManager.getBaseUrl()+"/applicationForms/"+requestId+"/"+fileUploader.getId()+"/upload");
+			this.fileUploaders.forEach(function (fileUploader) {
+				fileUploader.setUploadUrl(that.APIManager.getBaseUrl() + "/applicationForms/" + requestId + "/" + fileUploader.getId() + "/upload");
 				fileUploader.upload();
 			})
 		},
@@ -195,6 +202,7 @@ sap.ui.define([
 						break;
 					case "sap.ui.unified.FileUploader":
 						that.fileUploaders.push(oElement.getFields()[0]);
+						that.pendingUpload = true;
 						break;
 
 					default:
