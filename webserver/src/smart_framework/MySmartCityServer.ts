@@ -6,13 +6,13 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import AUserManager from "./user_management/AUserManager";
 import { UserMiddleware } from "./user_management/UserMiddleware";
-import { Db, MongoClient } from "mongodb";
 import SmartMiddleware from "./server/SmartMiddleware";
 import RequestExtention from "./RequestExtention";
 import { NotificationManager } from "./notifications/NotificationManager";
 import { NotificationsRoute } from "./server/NotificationsRoute";
 import CalendarManager from "./cityCalendar/CalendarManager";
 import { CalendarItemRoute } from "./server/CalendarItemRoute";
+import fileUpload from "express-fileupload";
 
 export default class MySmartCityServer {
 
@@ -32,6 +32,7 @@ export default class MySmartCityServer {
     private prepare(): void {
         this.app.use(bodyParser.json());
         this.app.use(cookieParser());
+        this.app.use(fileUpload());
         this.app.use(SmartMiddleware(this.mongoDbString, this.dbName));
     }
 

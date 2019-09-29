@@ -7,6 +7,7 @@ interface MovementData {
     postalCode: number;
     city: string;
     date: Date;
+    attachment: string;
 }
 
 export class Movement extends AApplicationForm<MovementData> {
@@ -38,6 +39,11 @@ export class Movement extends AApplicationForm<MovementData> {
                 id: "date",
                 min: new Date(),
                 label: "@form_pers/movement_date"
+            }, 
+            {
+                type: "file",
+                label: "@form_pers/movement_attatchment",
+                id: "attachment"
             }
         ]
     }    

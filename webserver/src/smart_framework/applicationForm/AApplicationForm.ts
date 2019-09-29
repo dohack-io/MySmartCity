@@ -1,12 +1,12 @@
 import { FormField } from "./RequestField";
-import { Collection, Db } from "mongodb";
+import { Db, ObjectID, ObjectId } from "mongodb";
 import User from "../user_management/User";
 import { ApplicationFormMetadata } from "./ApplicationFormMetadata";
 import { DbTarget } from "../DbTarget";
 import { LanguageManager, Language, Langable } from "../i18n/LanguageManager";
+import { ValidateResponse, CreateRequestResponse } from "./CreateRequestResponse";
 
 type UserSubmitedData = { [key: string]: any };
-type ValidateResponse = { [key: string]: string };
 
 /**
  * Daten welcher jeder Antrag hat
@@ -72,17 +72,21 @@ export abstract class AApplicationForm<T> extends DbTarget {
      * Bearbeitet einen Nutzerantrag und speichert diesen bei Erfolg
      * @param data Daten, welche der Nutzer übermittelt hat
      */
-    public async processUserData(data: UserSubmitedData): Promise<ValidateResponse | void> {
+    public async processUserData(data: UserSubmitedData): Promise<CreateRequestResponse> {
         // Userdaten entsprechen gefordertes Format
         if (this.validateDataType(data)) {
             let validateCallback = await this.validate(data);
+            let objectId : ObjectID;
 
             // Sind Daten valide?
             if (this.isValidValidateResponse(validateCallback)) {
-                await this.saveToDatabase(data);
+                objectId = await this.saveToDatabase(data);
             }
 
-            return validateCallback;
+            return {
+                requestId: objectId,
+                validate: validateCallback
+            };
         }
         else {
             throw new Error("UserData has not the right format!");
@@ -106,10 +110,11 @@ export abstract class AApplicationForm<T> extends DbTarget {
         };
     }
 
-    protected async saveToDatabase(data: T): Promise<void> {
+    protected async saveToDatabase(data: T): Promise<ObjectID> {
         let saveData: T & GeneralRequest = this.extend(data, this.createGeneralRequest());
         let collection = await this.getCollection<T & GeneralRequest>(AApplicationForm.COLLECTION_NAME);
-        await collection.insertOne(saveData);
+        let insertResponse = await collection.insertOne(saveData);
+        return insertResponse.insertedId;
     }
 
     /**
