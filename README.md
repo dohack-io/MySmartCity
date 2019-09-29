@@ -48,7 +48,7 @@ This office has all the forms of the city.
 A citizen fills an application form and the respective employee of the city works on this.
 The citizen knows through the app the dates and the status
 
-![future](future.PNG)
+![future](future2.PNG)
 
 ## What were challenges you encountered and Lessons Learned?
 //TODO: describe challenges you encountered and how you solved them. also name your lessons learned
