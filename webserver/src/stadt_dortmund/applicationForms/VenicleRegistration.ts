@@ -19,12 +19,12 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
             {
                 type: "text",
                 id: "kennz",
-                label: "Number Plate"
+                label: "@form_kfz/registerVenicle_kennz"
             },
             {
                 type: "text",
                 id: "fgn",
-                label: "Chassis Number"
+                label: "@form_kfz/registerVenicle_fgn"
             }
         ];
     }

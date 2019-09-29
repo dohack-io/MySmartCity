@@ -21,27 +21,27 @@ export class BulkTrash extends AApplicationForm<BulkTrashData> {
                 type: "dateTime",
                 id: "date",
                 min: new Date(),
-                label: "Movement Date"
+                label: "@form_pers/bulkTrash_date"
             },
             {
                 type: "text",
                 id: "street",
-                label: "Street"
+                label: "@form_universal_street"
             },
             {
                 type: "text",
                 id: "number",
-                label: "Home Number"
+                label: "@form_universal_number"
             },
             {
                 type: "number",
                 id: "postalCode",
-                label: "Postalcode"
+                label: "@form_universal_postalCode"
             },
             {
                 type: "text",
                 id: "city",
-                label: "City"
+                label: "@form_universal_city"
             }
         ]
     }    
