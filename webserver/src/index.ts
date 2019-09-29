@@ -9,12 +9,31 @@ import { SimpleTrashCalendar } from "./stadt_dortmund/SimpleTrashCalendar";
 import { EventCalendar } from "./stadt_dortmund/EventCalendar";
 import { BulkTrash } from "./stadt_dortmund/applicationForms/BulkTrash";
 import { EmbeddedCalendarItems } from "./stadt_dortmund/EmbeddedCalendarItems";
+import { IdentyCardRenew } from "./stadt_dortmund/applicationForms/IdentyCardRenew";
+
+var applicationFormManager = new ApplicationFormManager()
+    .addCategories([
+        {
+            categoryId: "kfz",
+            forms: {
+                "registerVenicle": VenicleRegistration
+            }
+        },
+        {
+            categoryId: "pers",
+            forms: {
+                "bulkTrash": BulkTrash,
+                "movement": Movement,
+                "identyCardRenew": IdentyCardRenew
+            }
+        }
+    ]);
 
 new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     .useCors()
     .useUserManager(new DoUserManagement("users", "tokens"))
     .useNotification(
-        new NotificationManager()
+        new NotificationManager(applicationFormManager)
             .integrateApplicationForms()
     )
     .useCalendar(
@@ -23,23 +42,6 @@ new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
             .addCalendarSource(SimpleTrashCalendar)
             .addCalendarSource(EventCalendar)
     )
-    .useApplicationForms(
-        new ApplicationFormManager()
-            .addCategories([
-                {
-                    categoryId: "kfz",
-                    forms: {
-                        "registerVenicle": VenicleRegistration
-                    }
-                },
-                {
-                    categoryId: "pers",
-                    forms: {
-                        "bulkTrash": BulkTrash,
-                        "movement": Movement
-                    }
-                }
-            ])
-    )
+    .useApplicationForms(applicationFormManager)
     .useStaticFile("../frontend/dist")
     .start();

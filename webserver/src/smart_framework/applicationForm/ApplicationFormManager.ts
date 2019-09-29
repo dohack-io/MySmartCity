@@ -6,6 +6,7 @@ import User from "../user_management/User";
 import { getFullId } from "./Utils";
 import { LanguageManager } from "../i18n/LanguageManager";
 import { ApplicationFormOverview } from "./ApplicationFormsOverview";
+import UserFormsFinder from "./UserFormsFinder";
 
 /**
  * Informationen für eine Kategorie

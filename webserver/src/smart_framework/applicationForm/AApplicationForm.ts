@@ -27,7 +27,7 @@ export abstract class AApplicationForm<T> extends DbTarget {
 
     public static readonly COLLECTION_NAME = "Requests";
 
-    private user: User;
+    protected user: User;
 
     public formId: string;
 
