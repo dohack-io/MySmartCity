@@ -66,11 +66,11 @@ sap.ui.define([
 						break;
 
 					case Constants.DATETIME:
-						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, new Date(oElement.min), new Date(oElement.max)));
+						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, oElement.min,oElement.max));
 						break;
 
 					case Constants.DATE:
-						oForm.addFormElement(that.addDateInput(oElement.id, oElement.label, oElement.placeholder, new Date(oElement.min), new Date(oElement.max)));
+						oForm.addFormElement(that.addDateInput(oElement.id, oElement.label, oElement.placeholder, oElement.min, oElement.max));
 						break;
 
 					case Constants.FILE:
@@ -108,7 +108,6 @@ sap.ui.define([
 
 		uploadComplete: function (oEvent) {
 			var sResponse = oEvent.getParameter("response");
-			debugger;
 		},
 
 		addDateTimeInput: function (isID, isLabel, isPlaceholder, isMinDate, isMaxDate) {
@@ -116,8 +115,7 @@ sap.ui.define([
 			var newField = new sap.m.DateTimePicker(isID);
 			newField.setPlaceholder(isPlaceholder);
 			newFormElement.addField(newField);
-			newField.setMinDate(isMinDate);
-			newField.setMaxDate(isMaxDate);
+			this._applyMinMaxDates(newField, isMinDate, isMaxDate);
 			return newFormElement;
 		},
 
@@ -126,9 +124,18 @@ sap.ui.define([
 			var newField = new sap.m.DatePicker(isID);
 			newField.setPlaceholder(isPlaceholder);
 			newFormElement.addField(newField);
-			newField.setMinDate(isMinDate);
-			newField.setMaxDate(isMaxDate);
+			this._applyMinMaxDates(newField, isMinDate, isMaxDate);
 			return newFormElement;
+		},
+
+		_applyMinMaxDates: function(fieldElement, min, max){
+			if (min) {
+				fieldElement.setMinDate(new Date(min));
+			}
+			if (max) {
+				fieldElement.setMaxDate(new Date(max));
+			}
+
 		},
 
 		onSave: function () {
@@ -138,7 +145,7 @@ sap.ui.define([
 
 		sendData: async function (iaData) {
 			var aErrorData = await this.APIManager.submitApplicationForm(this.sFullName, iaData);
-			if (Object.keys(aErrorData).length != 0) {
+			if (Object.keys(aErrorData.validate).length != 0) {
 				this.setErrorData(aErrorData);
 			} else {
 				var msg = 'Application Form is send';
