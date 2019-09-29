@@ -29,31 +29,33 @@
 							<FeedListItem sender="{listModel>title}" 
 								icon="{listModel>icon}" 
 								iconDensityAware="false" 
-								timestamp="{listModel>date}" 
+								timestamp="{path : 'listModel>date', 
+             						type : 'sap.ui.model.type.DateTime',
+             						formatOptions: { style : 'medium'}}" 
 								text="{listModel>content}">
 							</FeedListItem>
 						</List>
 					</items>
 				</FlexBox>
 				<FlexBox width="95%" 
-					class="columns"
+					class="columns" 
 					alignItems="Stretch">
 					<items>
-						<GenericTile class="page2BgImg1 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+						<GenericTile class="page2BgImg1 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
 							frameType="TwoByOne" 
 							press="onPressTile">
 							<TileContent id="tilecontent1">
 								<NewsContent id="newscontent1"/>
 							</TileContent>
 						</GenericTile>
-						<GenericTile press="onPressTile" class="page2BgImg2 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
-							frameType="TwoByOne" 
-							>
+						<GenericTile press="onPressTile" 
+							class="page2BgImg2 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
+							frameType="TwoByOne">
 							<TileContent id="tilecontent2">
 								<NewsContent id="newscontent2"/>
 							</TileContent>
 						</GenericTile>
-						<GenericTile class="page2BgImg3 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+						<GenericTile class="page2BgImg3 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
 							frameType="TwoByOne" 
 							press="onPressTile">
 							<TileContent id="tilecontent3">

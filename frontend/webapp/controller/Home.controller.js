@@ -38,7 +38,7 @@ sap.ui.define([
 		},
 
 		onPressTile: function () {
-			location.hash = "#"+Constants.CALENDAR+"/";
+			location.hash = "#" + Constants.CALENDAR + "/";
 		},
 		loadTreeData: async function () {
 			var data = await this.APIManager.getApplicationFormTree();
@@ -64,6 +64,7 @@ sap.ui.define([
 
 		loadListData: async function () {
 			var data = await this.APIManager.getNotifications();
+			data.forEach(d=>d.date = new Date(d.date));
 			this.listModel.setData(data);
 		},
 
@@ -106,16 +107,14 @@ sap.ui.define([
 
 		},
 
-		convertDate: function(oDate){
-			var dateInst = sap.ui.core.format.DateFormat.getDateInstance({
-				pattern: "dd.MM.YYYY"
+		convertDate: function (oDate) {
+			var dateInst = sap.ui.core.format.DateFormat.getDateTimeInstance({
+				style: "medium"
 			});
 
 			var tempDate = dateInst.format(oDate);
 			return tempDate;
 		},
-
-
 
 		onMenuSelChanged: function (oEvent) {
 			var oSelectedContext = oEvent.getParameter(Constants.LISTITEM);
@@ -131,7 +130,7 @@ sap.ui.define([
 				});
 			});
 			if (sFullName) {
-				location.hash = "#"+Constants.FORM+"/" + sFullName;
+				location.hash = "#" + Constants.FORM + "/" + sFullName;
 			}
 
 		}
