@@ -2,13 +2,14 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/unified/FileUploader",
+	'sap/ui/core/Fragment',
 	"../model/formatter",
 	"../utils/APIManager",
 	'sap/ui/unified/CalendarLegendItem',
 	'sap/ui/unified/DateTypeRange',
 	"sap/ui/core/format/DateFormat",
 	"sap/ui/model/json/JSONModel"
-], function (MessageBox, Controller, FileUploader, formatter, APIManager, CalendarLegendItem, DateFormat, DateTypeRange, JSONModel) {
+], function (MessageBox, Controller, FileUploader, Fragment, formatter, APIManager, CalendarLegendItem, DateFormat, DateTypeRange, JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.basicTemplate.controller.App", {
@@ -25,7 +26,6 @@ sap.ui.define([
 			this.calendarModel = new JSONModel({});
 			this.getOwnerComponent().setModel(this.calendarModel, "calendarModel");
 			this.loadCalendarData();
-			this.loadnextCalendarData();
 
 		},
 		onNavButton: function (oEvent) {
@@ -37,10 +37,54 @@ sap.ui.define([
 			oRouter.navTo("home", true);
 
 		},
-		onPressTile: function () {
-			console.log("Test");
+		handleAppointmentSelect: function (oEvent) {
+			var oAppointment = oEvent.getParameter("appointment");
+
+			if (oAppointment) {
+				this._handleSingleAppointment(oAppointment);
+			}
 		},
 
+		_handleSingleAppointment: function (oAppointment) {
+			if (oAppointment === undefined) {
+				return;
+			}
+
+			if (!oAppointment.getSelected()) {
+				this._oDetailsPopover.close();
+				return;
+			}
+
+			if (!this._oDetailsPopover) {
+				this._oDetailsPopover = Fragment.load({
+					id: "myPopoverFrag",
+					name: "sap.ui.demo.basicTemplate.view.CalendarDetail",
+					controller: this
+				}).then(function (oDialog) {
+					this._oDetailsPopover = oDialog;
+					this._setDetailsDialogContent(oAppointment);
+
+				}.bind(this));
+			} else {
+				this._setDetailsDialogContent(oAppointment);
+			}
+
+		},
+		_setDetailsDialogContent: function(oAppointment){
+			var oTextStart = Fragment.byId("myPopoverFrag", "startDate"),
+				oTextEnd = Fragment.byId("myPopoverFrag", "endDate"),
+				oAppBindingContext = oAppointment.getBindingContext(),
+				oMoreInfo = Fragment.byId("myPopoverFrag", "moreInfo"),
+				oDetailsPopover = Fragment.byId("myPopoverFrag","detailsPopover");
+
+			this._oDetailsPopover.setBindingContext(oAppBindingContext);
+			this._oDetailsPopover.openBy(oAppointment);
+
+			oTextStart.setText(this.convertDate(oAppointment.getStartDate()));
+			oTextEnd.setText(this.convertDate(oAppointment.getEndDate()));
+			oMoreInfo.setText(oAppointment.getText());
+			oDetailsPopover.setTitle(oAppointment.getTitle());
+		},
 		loadCalendarData: async function () {
 			var oData = await this.APIManager.getCalendarDates();
 			oData.forEach(function (oDataEntry) {
@@ -58,7 +102,7 @@ sap.ui.define([
 		},
 
 
-		convertDate: function(oDate){
+		convertDate: function (oDate) {
 			var dateInst = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "dd.MM.YYYY"
 			});
@@ -66,6 +110,7 @@ sap.ui.define([
 			var tempDate = dateInst.format(oDate);
 			return tempDate;
 		},
+
 
 	});
 });

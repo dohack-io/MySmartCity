@@ -11,6 +11,7 @@
 		showNavButton="true" 
 		id="page">
 		<PlanningCalendar id="pc" 
+			appointmentSelect="handleAppointmentSelect" 
 			rows="{calendarModel>/}">
 			<rows>
 				<PlanningCalendarRow title="{calendarModel>categoryName}" 

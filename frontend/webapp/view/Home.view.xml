@@ -36,8 +36,7 @@
 					</items>
 				</FlexBox>
 				<FlexBox width="95%" 
-					class="columns" 
-					title="Test" 
+					class="columns"
 					alignItems="Stretch">
 					<items>
 						<GenericTile class="page2BgImg1 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
