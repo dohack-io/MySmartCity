@@ -31,16 +31,14 @@ MySmartCityApp is a framework for approval forms and all about this.
 
 ## What benefit will your work bring in smart city context?
 
-
-
-Now:
+### Now:
 
 Citizens have to go to different offices for their form e.g. Renew driver license -> Driver license office or Renew identity card -> Town Hall.
 
 Each office has its own opening hours and this is very complicated for citizens.
 ![now](Now.PNG)
 
-SmartCity:
+### SmartCity:
 
 In a SmartCityworld there is only one virtual office left!.
 This office has all the forms of the city.
@@ -51,7 +49,14 @@ The citizen knows through the app the dates and the status
 ![future](future2.PNG)
 
 ## What were challenges you encountered and Lessons Learned?
-//TODO: describe challenges you encountered and how you solved them. also name your lessons learned
+## Problems with the frontend development
+* Problem: UI5 is complicatad in some place
+* Solution: Workaround in some situation e.g. not elegant development
+
+## Problems with the backend development
+* Problem: New requirements in the middle and the end of the project
+* Solution: Rebuild and restructure the code
+
 
 ## About your team
 
@@ -61,7 +66,7 @@ The citizen knows through the app the dates and the status
  * Age: 23 years old
  * Living place: Herne⋅
  * Employer: [Rku.It](http://www.rku-it.de)/Herne
- * Position: Dual Student Software Engineering  at FH Dortmund
+ * Position: Dual Student Software Engineering at FH Dortmund
  * Development experience: Java/TypeScript/React/C#
 
 **Team Assistant Sven Treutler**
@@ -75,8 +80,10 @@ The citizen knows through the app the dates and the status
 
 **Important things to do**
 * User Experience
+* Error Tolerance
 * Performance
 * User Management
+* Logging
 * Admin App
 * Employee App
 
@@ -90,4 +97,5 @@ Application forms
 Calendar
 ![calendar](calendar.PNG)
 ## Anything to add?
-//TODO: add additional information. Is there soemthing you couldn't mention before? Do you have some videos or demos of your project?
+At first: Many thanks to the organization of the DO!Hack 2019. Super Job. We love it!
+
