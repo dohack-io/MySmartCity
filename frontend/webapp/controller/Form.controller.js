@@ -5,9 +5,10 @@ sap.ui.define([
 	"sap/ui/unified/FileUploader",
 	"../model/formatter",
 	"../utils/APIManager",
+	"../utils/Constants",
 	"sap/ui/core/routing/History",
 	"sap/ui/model/json/JSONModel"
-], function (MessageBox, MessageToast, Controller, FileUploader, formatter, APIManager, History, JSONModel) {
+], function (MessageBox, MessageToast, Controller, FileUploader, formatter, APIManager, Constants, History, JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.basicTemplate.controller.App", {
@@ -17,7 +18,7 @@ sap.ui.define([
 		onInit: function () {
 
 			this.getOwnerComponent().getRouter().getRoute("form").attachPatternMatched(this.onRouteMatched.bind(this), this);
-			this.APIManager = new APIManager("http://10.4.1.121:3000");
+			this.APIManager = new APIManager(Constants.BASE_URL);
 			this.formModel = new JSONModel({});
 			this.getOwnerComponent().setModel(this.formModel, "formModel");
 
@@ -56,19 +57,23 @@ sap.ui.define([
 
 			data.forEach(function (oElement) {
 				switch (oElement.type) {
-					case "text":
+					case Constants.TEXT:
 						oForm.addFormElement(that.addInputField(oElement.id, oElement.label, oElement.placeholder, 'Text'));
 						break;
-					case "number":
+					case Constants.NUMBER:
 						oForm.addFormElement(that.addInputField(oElement.id, oElement.label, oElement.placeholder, 'Number'));
 						break;
 
-					case "dateTime":
+					case Constants.DATETIME:
 						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, "2018-12-17T03:24:00", "2018-12-17T03:24:00"));
 						break;
 
-					case "date":
+					case Constants.DATE:
 						oForm.addFormElement(that.addDateInput(oElement.id, oElement.label, oElement.placeholder, "2018-12-17T03:24:00", "2018-12-17T03:24:00"));
+						break;
+
+					case Constants.FILE:
+						oForm.addFormElement(that.addFileField(oElement.id, oElement.label, oElement.placeholder));
 						break;
 				}
 			});
@@ -94,8 +99,18 @@ sap.ui.define([
 			var newField = new FileUploader(isID);
 			newField.setPlaceholder(isPlaceholder);
 			newFormElement.addField(newField);
+			newField.attachUploadComplete(this.uploadComplete.bind(this), this);
+			newField.setSendXHR(true);
+			newField.setName(Constants.FILE);
 			return newFormElement;
 		},
+
+		uploadComplete: function (oEvent) {
+			var sResponse = oEvent.getParameter("response");
+			debugger;
+		},
+
+
 
 		addDateTimeInput: function (isID, isLabel, isPlaceholder, isMinDate, isMaxDate) {
 			var newFormElement = this.addFormElement(isLabel);
@@ -133,7 +148,9 @@ sap.ui.define([
 		setErrorData: function (aErrorData) {
 			this.oForm = this.getView().byId("FormContainer");
 			var aElements = this.oForm.getFormElements();
-			Object.keys(aErrorData).forEach(oElement => {
+			var requestId = aErrorData.requestId;
+			this.uploadData(requestId);
+			Object.keys(aErrorData.validate).forEach(oElement => {
 				var oInput = sap.ui.getCore().byId(oElement);
 				var sErrorText = aErrorData[oElement];
 				console.log(sErrorText);
@@ -143,10 +160,20 @@ sap.ui.define([
 			});
 		},
 
+		uploadData: function(requestId){
+			var that = this;
+			this.fileUploaders.forEach(function(fileUploader){
+				fileUploader.setUploadUrl(that.APIManager.getBaseUrl()+"/applicationForms/"+requestId+"/"+fileUploader.getId()+"/upload");
+				fileUploader.upload();
+			})
+		},
+
 
 		getValuesInForm: function (oForm) {
+			this.fileUploaders = [];
 			var aElements = oForm.getFormElements();
 			var aData = {};
+			var that = this;
 			aElements.forEach(function (oElement) {
 				var sId = oElement.getFields()[0].getId();
 				var oControl = sap.ui.getCore().byId(sId);
@@ -156,6 +183,10 @@ sap.ui.define([
 					case "sap.m.DateTimePicker":
 						sValue = oElement.getFields()[0].getDateValue();
 						break;
+					case "sap.ui.unified.FileUploader":
+						that.fileUploaders.push(oElement.getFields()[0]);
+						break;
+
 					default:
 						sValue = oElement.getFields()[0].getValue();
 				}

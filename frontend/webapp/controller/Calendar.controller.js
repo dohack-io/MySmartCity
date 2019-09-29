@@ -5,11 +5,12 @@ sap.ui.define([
 	'sap/ui/core/Fragment',
 	"../model/formatter",
 	"../utils/APIManager",
+	"../utils/Constants",
 	'sap/ui/unified/CalendarLegendItem',
 	'sap/ui/unified/DateTypeRange',
 	"sap/ui/core/format/DateFormat",
 	"sap/ui/model/json/JSONModel"
-], function (MessageBox, Controller, FileUploader, Fragment, formatter, APIManager, CalendarLegendItem, DateFormat, DateTypeRange, JSONModel) {
+], function (MessageBox, Controller, FileUploader, Fragment, formatter, APIManager, Constants, CalendarLegendItem, DateFormat, DateTypeRange, JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.basicTemplate.controller.App", {
@@ -17,11 +18,11 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function () {
-			this.getOwnerComponent().getRouter().getRoute("home").attachPatternMatched(this.onRouteMatched.bind(this), this);
+			this.getOwnerComponent().getRouter().getRoute(Constants.HOME).attachPatternMatched(this.onRouteMatched.bind(this), this);
 		},
 
 		onRouteMatched: function (oEvent) {
-			this.APIManager = new APIManager("http://10.4.1.121:3000");
+			this.APIManager = new APIManager(Constants.BASE_URL);
 
 			this.calendarModel = new JSONModel({});
 			this.getOwnerComponent().setModel(this.calendarModel, "calendarModel");
@@ -34,7 +35,7 @@ sap.ui.define([
 
 		getBack: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("home", true);
+			oRouter.navTo(Constants.HOME, true);
 
 		},
 		handleAppointmentSelect: function (oEvent) {

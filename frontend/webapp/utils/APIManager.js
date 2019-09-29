@@ -51,6 +51,9 @@ sap.ui.define([
 
         getNextDates: function (count) {
             return this._fetch("/calendar?next=" + count);
+        },
+        getBaseUrl: function () {
+            return this.baseUrl;
         }
 
     });

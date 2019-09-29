@@ -4,11 +4,12 @@ sap.ui.define([
 	"sap/ui/unified/FileUploader",
 	"../model/formatter",
 	"../utils/APIManager",
+	"../utils/Constants",
 	'sap/ui/unified/CalendarLegendItem',
 	'sap/ui/unified/DateTypeRange',
 	"sap/ui/core/format/DateFormat",
 	"sap/ui/model/json/JSONModel"
-], function (MessageBox, Controller, FileUploader, formatter, APIManager, CalendarLegendItem, DateFormat, DateTypeRange, JSONModel) {
+], function (MessageBox, Controller, FileUploader, formatter, APIManager, Constants, CalendarLegendItem, DateFormat, DateTypeRange, JSONModel) {
 	"use strict";
 
 	return Controller.extend("sap.ui.demo.basicTemplate.controller.App", {
@@ -16,18 +17,18 @@ sap.ui.define([
 		formatter: formatter,
 
 		onInit: function () {
-			this.getOwnerComponent().getRouter().getRoute("home").attachPatternMatched(this.onRouteMatched.bind(this), this);
+			this.getOwnerComponent().getRouter().getRoute(Constants.HOME).attachPatternMatched(this.onRouteMatched.bind(this), this);
 		},
 
 		onRouteMatched: function (oEvent) {
-			this.APIManager = new APIManager("http://10.4.1.121:3000");
+			this.APIManager = new APIManager(Constants.BASE_URL);
 			this.treeModel = new JSONModel({});
 			this.listModel = new JSONModel({});
 			this.calendarModel = new JSONModel({});
 
-			this.getOwnerComponent().setModel(this.treeModel, "formModel");
-			this.getOwnerComponent().setModel(this.listModel, "listModel");
-			this.getOwnerComponent().setModel(this.calendarModel, "calendarModel");
+			this.getOwnerComponent().setModel(this.treeModel, Constants.TREEMODEL);
+			this.getOwnerComponent().setModel(this.listModel, Constants.LISTMODEL);
+			this.getOwnerComponent().setModel(this.calendarModel, Constants.CALENDARMODEL);
 
 			this.loadTreeData();
 			this.loadListData();
@@ -37,7 +38,7 @@ sap.ui.define([
 		},
 
 		onPressTile: function () {
-			location.hash = "#calendar/";
+			location.hash = "#"+Constants.CALENDAR+"/";
 		},
 		loadTreeData: async function () {
 			var data = await this.APIManager.getApplicationFormTree();
@@ -94,11 +95,10 @@ sap.ui.define([
 					oDataEntry.end = new Date(oDataEntry.start.getYear(), oDataEntry.start.getMonth(),
 						oDataEntry.start.getDate() + 1);
 				}
-				var tilecontent = that.getView().byId("tilecontent" + counter);
-				//tilecontent.setFooter(oDataEntry.start);
+				var tilecontent = that.getView().byId(Constants.TILECONTENT + counter);
 
 				tilecontent.setFooter(that.convertDate(oDataEntry.start));
-				var newscontent = that.getView().byId("newscontent" + counter);
+				var newscontent = that.getView().byId(Constants.NEWSCONTENT + counter);
 				newscontent.setContentText(oDataEntry.description);
 				newscontent.setSubheader(oDataEntry.title);
 				counter++;
@@ -118,7 +118,7 @@ sap.ui.define([
 
 
 		onMenuSelChanged: function (oEvent) {
-			var oSelectedContext = oEvent.getParameter("listItem");
+			var oSelectedContext = oEvent.getParameter(Constants.LISTITEM);
 			var sTitle = oSelectedContext.getTitle();
 			var sFullName;
 			var oModelData = this.treeModel.getData();
@@ -131,7 +131,7 @@ sap.ui.define([
 				});
 			});
 			if (sFullName) {
-				location.hash = "#form/" + sFullName;
+				location.hash = "#"+Constants.FORM+"/" + sFullName;
 			}
 
 		}
