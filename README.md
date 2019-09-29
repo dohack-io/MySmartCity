@@ -49,11 +49,11 @@ The citizen knows through the app the dates and the status
 ![future](future2.PNG)
 
 ## What were challenges you encountered and Lessons Learned?
-## Problems with the frontend development
+#### Problems with the frontend development
 * Problem: UI5 is complicatad in some place
 * Solution: Workaround in some situation e.g. not elegant development
 
-## Problems with the backend development
+#### Problems with the backend development
 * Problem: New requirements in the middle and the end of the project
 * Solution: Rebuild and restructure the code
 
