@@ -7,7 +7,7 @@ MySmartCityApp is a framework for approval forms and all about this.
 **Features**
 * Dynamic layout for forms
 * Dynamic Validations
-* Status of approval forms
+* Status management of approval forms
 * FileUpload
 * Calendar entrys of important information
 
