@@ -35,7 +35,6 @@ sap.ui.define([
 		getBack: function () {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.navTo("home", true);
-
 		},
 
 
@@ -51,9 +50,11 @@ sap.ui.define([
 		},
 
 		loadData: async function (isURL) {
+			this.getView().byId("FormContainer").destroyFormElements();
 			var data = await this.APIManager.getApplicationForm(isURL);
 			var that = this;
 			var oForm = this.getView().byId("FormContainer");
+
 
 			data.forEach(function (oElement) {
 				switch (oElement.type) {

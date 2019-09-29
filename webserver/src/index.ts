@@ -24,7 +24,7 @@ var applicationFormManager = new ApplicationFormManager()
             forms: {
                 "bulkTrash": BulkTrash,
                 "movement": Movement,
-                "identyCardRenew": IdentyCardRenew
+                //"identyCardRenew": IdentyCardRenew
             }
         }
     ]);
