@@ -2,10 +2,8 @@ import { AApplicationForm, GeneralRequest } from "../../smart_framework/applicat
 import { FormField } from "../../smart_framework/applicationForm/RequestField";
 import { CalendarItem } from "../../smart_framework/cityCalendar/CalendarItem";
 import moment = require("moment");
-import { ACalendarSource } from "../../smart_framework/cityCalendar/ACalendarSource";
-import { CalendarItemResponse } from "../../smart_framework/cityCalendar/CalendarItemResponse";
 
-interface BulkTrashData {
+export interface BulkTrashData {
     date: Date;
     street: string;
     number: string;
@@ -76,21 +74,4 @@ export class BulkTrash extends AApplicationForm<BulkTrashData> {
         };
         await super.saveToDatabase(data);
     }
-}
-
-export class BulkTrashCalendarItems extends ACalendarSource {
-    
-    public async addCalendarItems(response: CalendarItemResponse): Promise<void> {
-        let collection = await this.getCollection<BulkTrashData & GeneralRequest>(AApplicationForm.COLLECTION_NAME, false);
-
-        let items = await collection.find({
-            attachedEvent: {
-                $ne: null
-            }
-        })
-        .toArray();
-
-        response.addItems("My Application Requests", items.map(e => e.attachedEvent));
-    }
-
 }

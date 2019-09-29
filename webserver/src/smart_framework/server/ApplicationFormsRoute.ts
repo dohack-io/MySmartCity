@@ -8,9 +8,7 @@ import { LanguageManager } from "../i18n/LanguageManager";
 import { UploadedFile } from "express-fileupload";
 import { FileDbObject, FileUploadHandler } from "../applicationForm/FileDbObject";
 
-export type ApplicationFormOverview = {
-    [categoryName: string]: ApplicationFormRestMetadata[]
-};
+
 
 export class ApplicationFormsRoute implements IServerRoute {
 
