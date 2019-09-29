@@ -16,28 +16,28 @@ export class Movement extends AApplicationForm<MovementData> {
             {
                 type: "text",
                 id: "street",
-                label: "Street"
+                label: "@form_universal_street"
             },
             {
                 type: "text",
                 id: "number",
-                label: "Home Number"
+                label: "@form_universal_number"
             },
             {
                 type: "number",
                 id: "postalCode",
-                label: "Postalcode"
+                label: "@form_universal_postalCode"
             },
             {
                 type: "text",
                 id: "city",
-                label: "City"
+                label: "@form_universal_city"
             },
             {
                 type: "date",
                 id: "date",
                 min: new Date(),
-                label: "Movement Date"
+                label: "@form_pers/movement_date"
             }
         ]
     }    
@@ -60,7 +60,4 @@ export class Movement extends AApplicationForm<MovementData> {
             && tData.postalCode !== undefined
             && tData.street !== undefined;
     }
-    
-    public applicationFormDescription = "Umziehen";
-    public applicationFormTitle = "Umzug melden";
 }

@@ -8,15 +8,12 @@ export type ApplicationFormFactoryCollection = { [requestTypeName: string]: Appl
 export class ApplicationFormCategory {
 
     private forms: ApplicationFormFactoryCollection;
-    private _categoryName: string;
     private _categoryId: string;
 
-    public get categoryName(): string { return this._categoryName; }
     public get categoryId(): string {return this._categoryId;}
 
-    constructor(categoryId: string, categoryName: string = categoryId) {
+    constructor(categoryId: string) {
         this._categoryId = categoryId;
-        this._categoryName = categoryName;
         this.forms = {};
     }
 

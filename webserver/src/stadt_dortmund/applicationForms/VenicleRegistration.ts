@@ -7,10 +7,6 @@ interface VenicleData {
 }
 
 export class VenicleRegistration extends AApplicationForm<VenicleData>{
-    
-    public applicationFormDescription: string = "Hier können Sie ihr neues KFZ Fahrzeug anmelden";
-
-    public applicationFormTitle: string = "KFZ Fahrzeug anmelden";
 
     public validateDataType(data: any): data is VenicleData {
         let tData = data as VenicleData;
@@ -23,12 +19,12 @@ export class VenicleRegistration extends AApplicationForm<VenicleData>{
             {
                 type: "text",
                 id: "kennz",
-                label: "Number Plate"
+                label: "@form_kfz/registerVenicle_kennz"
             },
             {
                 type: "text",
                 id: "fgn",
-                label: "Chassis Number"
+                label: "@form_kfz/registerVenicle_fgn"
             }
         ];
     }

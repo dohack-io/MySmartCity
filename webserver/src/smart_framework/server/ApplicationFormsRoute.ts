@@ -4,6 +4,7 @@ import { ApplicationFormManager } from "../applicationForm/ApplicationFormManage
 import { ApplicationFormRestMetadata } from "../applicationForm/ApplicationFormMetadata";
 import RequestExtention from "../RequestExtention";
 import { checkUser } from "../Utils";
+import { LanguageManager } from "../i18n/LanguageManager";
 
 export type ApplicationFormOverview = {
     [categoryName: string] : ApplicationFormRestMetadata[]
@@ -24,7 +25,8 @@ export class ApplicationFormsRoute implements IServerRoute {
     }
 
     async handleOverview(req: RequestExtention, res: express.Response) : Promise<void> {
-        let overview = this.manager.getOverview(req.database);
+        let user = checkUser(req, res);
+        let overview = await this.manager.getOverview(req.database, user);
         res.send(overview);
     }
 
@@ -34,8 +36,15 @@ export class ApplicationFormsRoute implements IServerRoute {
         let user = checkUser(req, res);
         
         let form = this.manager.getApplicationForm(req.database, categoryId, formId, user);
+        let i18n = new LanguageManager(req.database);
 
-        res.send(form.requestFields);
+        // Replace Label if nessessary
+        let requestFields = form.requestFields;
+        for (let field of requestFields) {
+            field.label = await i18n.handleText(field.label, user);
+        }
+
+        res.send(requestFields);
     }
 
     async handleSubmit(req: RequestExtention, res: express.Response) : Promise<void> {

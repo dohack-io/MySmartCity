@@ -19,12 +19,19 @@ export class LanguageManager extends DbTarget {
 
     public constructor(database: Db) {
         super(database);
-        this.connectCollection("i18n");
+        this.collection = database.collection<LangEntry>("i18n");
     }
 
-    private async connectCollection(collectionName: string): Promise<void> {
-        this.collection = await this.getCollection<LangEntry>(collectionName, false);
-    }
+    public async handleText(text: string, lang: Language | Langable) : Promise<string> {
+        // Require i18n
+        if (text[0] == "@") {
+            let i18nKey = text.substring(1);
+            return this.getText(i18nKey, lang);
+        }
+        else {
+            return text;
+        }
+    } 
 
     public async getText(key: string, lang: Language | Langable): Promise<string> {
         lang = this.getLanguage(lang);
