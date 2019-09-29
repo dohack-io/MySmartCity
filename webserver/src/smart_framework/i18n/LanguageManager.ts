@@ -7,7 +7,7 @@ export type Langable = {
     language: Language;
 }
 
-type LangEntry = {
+export type LangEntry = {
     key: string;
     lang: Language;
     value: string;
