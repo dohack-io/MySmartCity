@@ -97,5 +97,5 @@ Application forms
 Calendar
 ![calendar](calendar.PNG)
 ## Anything to add?
-At first: Many thanks to the organization of the DO!Hack 2019. Super Job. We love it!
+Many thanks to the organization of the DO!Hack 2019. Super Job. We love it!
 
