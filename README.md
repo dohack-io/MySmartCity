@@ -2,7 +2,16 @@
 This is a template, please fill it with your teams data. Places to fill in data are marked with a //TODO. If you fail to do so, our jury can't evaluate your project. 
 
 ## Description 
-//TODO: describe your project
+MySmartCityApp is a framework for approval forms and all about this.
+
+**Features**
+* Dynamic layout for forms
+* Dynamic Validations
+* Status of approval forms
+* FileUpload
+* Calendar entrys of important information
+
+
 
 ## Built with
 **Database**
@@ -22,9 +31,32 @@ This is a template, please fill it with your teams data. Places to fill in data 
 
 ## What benefit will your work bring in smart city context?
 
+### Now:
+
+Citizens have to go to different offices for their form e.g. Renew driver license -> Driver license office or Renew identity card -> Town Hall.
+
+Each office has its own opening hours and this is very complicated for citizens.
+![now](Now.PNG)
+
+### SmartCity:
+
+In a SmartCityworld there is only one virtual office left!.
+This office has all the forms of the city.
+
+A citizen fills an application form and the respective employee of the city works on this.
+The citizen knows through the app the dates and the status
+
+![future](future2.PNG)
 
 ## What were challenges you encountered and Lessons Learned?
-//TODO: describe challenges you encountered and how you solved them. also name your lessons learned
+## Problems with the frontend development
+* Problem: UI5 is complicatad in some place
+* Solution: Workaround in some situation e.g. not elegant development
+
+## Problems with the backend development
+* Problem: New requirements in the middle and the end of the project
+* Solution: Rebuild and restructure the code
+
 
 ## About your team
 
@@ -34,7 +66,7 @@ This is a template, please fill it with your teams data. Places to fill in data 
  * Age: 23 years old
  * Living place: Herne⋅
  * Employer: [Rku.It](http://www.rku-it.de)/Herne
- * Position: Dual Student Software Engineering  at FH Dortmund
+ * Position: Dual Student Software Engineering at FH Dortmund
  * Development experience: Java/TypeScript/React/C#
 
 **Team Assistant Sven Treutler**
@@ -48,8 +80,10 @@ This is a template, please fill it with your teams data. Places to fill in data 
 
 **Important things to do**
 * User Experience
+* Error Tolerance
 * Performance
 * User Management
+* Logging
 * Admin App
 * Employee App
 
@@ -63,4 +97,5 @@ Application forms
 Calendar
 ![calendar](calendar.PNG)
 ## Anything to add?
-//TODO: add additional information. Is there soemthing you couldn't mention before? Do you have some videos or demos of your project?
+At first: Many thanks to the organization of the DO!Hack 2019. Super Job. We love it!
+
