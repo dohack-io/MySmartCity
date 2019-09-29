@@ -2,7 +2,16 @@
 This is a template, please fill it with your teams data. Places to fill in data are marked with a //TODO. If you fail to do so, our jury can't evaluate your project. 
 
 ## Description 
-//TODO: describe your project
+MySmartCityApp is a framework for approval forms and all about this.
+
+**Features**
+* Dynamic layout for forms
+* Dynamic Validations
+* Status of approval forms
+* FileUpload
+* Calendar entrys of important information
+
+
 
 ## Built with
 **Database**
@@ -22,6 +31,24 @@ This is a template, please fill it with your teams data. Places to fill in data 
 
 ## What benefit will your work bring in smart city context?
 
+
+
+Now:
+
+Citizens have to go to different offices for their form e.g. Renew driver license -> Driver license office or Renew identity card -> Town Hall.
+
+Each office has its own opening hours and this is very complicated for citizens.
+![now](Now.PNG)
+
+SmartCity:
+
+In a SmartCityworld there is only one virtual office left!.
+This office has all the forms of the city.
+
+A citizen fills an application form and the respective employee of the city works on this.
+The citizen knows through the app the dates and the status
+
+![future](future.PNG)
 
 ## What were challenges you encountered and Lessons Learned?
 //TODO: describe challenges you encountered and how you solved them. also name your lessons learned
