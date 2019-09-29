@@ -81,6 +81,11 @@
 					"pattern": "form/{categoryid}/{formid}",
 					"name": "form",
 					"target" : "form"
+				},
+				{
+					"pattern": "calendar",
+					"name": "calendar",
+					"target" : "calendar"
 				}
 			],
 			"targets": {
@@ -93,6 +98,12 @@
 				"form": {
 					"viewName": "Form",
 					"viewId": "form",
+					"viewLevel": 2,
+					"title": "{i18n>title}"
+				},
+				"calendar": {
+					"viewName": "Calendar",
+					"viewId": "calendar",
 					"viewLevel": 2,
 					"title": "{i18n>title}"
 				}

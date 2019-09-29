@@ -5,7 +5,8 @@
 	xmlns:l="sap.ui.layout" 
 	xmlns:f="sap.ui.layout.form" 
 	xmlns:core="sap.ui.core" 
-	xmlns:u="sap.ui.unified">
+	xmlns:u="sap.ui.unified" 
+	xmlns:suite="sap.suite.ui.commons.GenericTile">
 	<Page id="page" 
 		title="{i18n>titleStart}">
 		<l:VerticalLayout class="sapUiContentPadding equalColumns" 
@@ -35,28 +36,30 @@
 					</items>
 				</FlexBox>
 				<FlexBox width="95%" 
-					class="columns" 
+					class="columns"
 					alignItems="Stretch">
 					<items>
-						<PlanningCalendar id="pc" 
-							rows="{calendarModel>/}">
-							<rows>
-								<PlanningCalendarRow title="{calendarModel>categoryName}" 
-								appointments="{path : 'calendarModel>events', templateShareable: 'true'}">
-									<appointments>
-										<u:CalendarAppointment startDate="{calendarModel>start}" 
-											endDate="{calendarModel>end}" 
-											color="{calendarModel>color}" 
-											icon="{pic}" 
-											title="{calendarModel>title}" 
-											text="{calendarModel>description}" 
-											type="{type}" 
-											tentative="{calendarModel>tenative}">
-										</u:CalendarAppointment>
-									</appointments>
-								</PlanningCalendarRow>
-							</rows>
-						</PlanningCalendar>
+						<GenericTile class="page2BgImg1 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+							frameType="TwoByOne" 
+							press="onPressTile">
+							<TileContent id="tilecontent1">
+								<NewsContent id="newscontent1"/>
+							</TileContent>
+						</GenericTile>
+						<GenericTile press="onPressTile" class="page2BgImg2 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+							frameType="TwoByOne" 
+							>
+							<TileContent id="tilecontent2">
+								<NewsContent id="newscontent2"/>
+							</TileContent>
+						</GenericTile>
+						<GenericTile class="page2BgImg3 sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+							frameType="TwoByOne" 
+							press="onPressTile">
+							<TileContent id="tilecontent3">
+								<NewsContent id="newscontent3"/>
+							</TileContent>
+						</GenericTile>
 					</items>
 				</FlexBox>
 			</l:content>

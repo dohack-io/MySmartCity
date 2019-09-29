@@ -47,6 +47,10 @@ sap.ui.define([
 
         getCalendarDates: function () {
             return this._fetch("/calendar");
+        },
+
+        getNextDates: function (count) {
+            return this._fetch("/calendar?next=" + count);
         }
 
     });
