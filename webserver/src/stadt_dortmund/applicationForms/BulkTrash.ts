@@ -76,9 +76,6 @@ export class BulkTrash extends AApplicationForm<BulkTrashData> {
         };
         await super.saveToDatabase(data);
     }
-    
-    public applicationFormDescription = "XYZ";
-    public applicationFormTitle = "Bulk Trash";
 }
 
 export class BulkTrashCalendarItems extends ACalendarSource {

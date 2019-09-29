@@ -19,11 +19,7 @@ export class LanguageManager extends DbTarget {
 
     public constructor(database: Db) {
         super(database);
-        this.connectCollection("i18n");
-    }
-
-    private async connectCollection(collectionName: string): Promise<void> {
-        this.collection = await this.getCollection<LangEntry>(collectionName, false);
+        this.collection = database.collection<LangEntry>("i18n");
     }
 
     public async getText(key: string, lang: Language | Langable): Promise<string> {

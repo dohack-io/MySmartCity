@@ -27,13 +27,11 @@ new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
             .addCategories([
                 {
                     categoryId: "kfz",
-                    categoryName: "Kraftfahrzeuge",
                     forms: {
-                        "register": VenicleRegistration
+                        "registerVenicle": VenicleRegistration
                     }
                 },
                 {
-                    categoryName: "Persönlich",
                     categoryId: "pers",
                     forms: {
                         "bulkTrash": BulkTrash,

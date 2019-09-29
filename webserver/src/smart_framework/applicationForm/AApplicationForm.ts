@@ -3,6 +3,7 @@ import { Collection, Db } from "mongodb";
 import User from "../user_management/User";
 import { ApplicationFormMetadata } from "./ApplicationFormMetadata";
 import { DbTarget } from "../DbTarget";
+import { LanguageManager, Language, Langable } from "../i18n/LanguageManager";
 
 type UserSubmitedData = { [key: string]: any };
 type ValidateResponse = { [key: string]: string };
@@ -22,18 +23,32 @@ export type GeneralRequest = {
 /**
  * Stellt einen Antrag dar
  */
-export abstract class AApplicationForm<T> extends DbTarget implements ApplicationFormMetadata {
+export abstract class AApplicationForm<T> extends DbTarget {
 
     public static readonly COLLECTION_NAME = "Requests";
 
-    private user?: User;
+    private user: User;
 
-    public requestType: string;
+    public formId: string;
 
-    constructor(database: Db, formId: string, user?: User) {
+    constructor(database: Db, formId: string, user: User) {
         super(database);
         this.user = user;
-        this.requestType = formId;
+        this.formId = formId;
+    }
+
+    /**
+     * Gibt die Metadaten zurück.
+     * Standartmäßig wird aus den i18n die Felder: 
+     * form_{categoryId}/{formId}_description und form_{categoryId}/{formid}_title genommen
+     * @param lang Sprache für die Metadaten
+     */
+    public async getMetadata(lang: Language | Langable): Promise<ApplicationFormMetadata> {
+        let i18n = new LanguageManager(this.db);
+        return {
+            applicationFormDescription: await i18n.getText("form_" + this.formId + "_description", lang),
+            applicationFormTitle: await i18n.getText("form_" + this.formId + "_title", lang)
+        };
     }
 
     /**
@@ -52,16 +67,6 @@ export abstract class AApplicationForm<T> extends DbTarget implements Applicatio
      * @param data User Data
      */
     public abstract validateDataType(data: any): data is T;
-
-    /**
-     * Gibt eine Beschreibung des Antrags zurück
-     */
-    public abstract get applicationFormDescription(): string;
-
-    /**
-     * Gibt den Titel des Antrags zurück
-     */
-    public abstract get applicationFormTitle(): string;
 
     /**
      * Bearbeitet einen Nutzerantrag und speichert diesen bei Erfolg
@@ -94,7 +99,7 @@ export abstract class AApplicationForm<T> extends DbTarget implements Applicatio
     private createGeneralRequest(): GeneralRequest {
         return {
             created: new Date(),
-            requestType: this.requestType,
+            requestType: this.formId,
             state: "Open",
             lastChange: new Date(),
             userId: this.user.userId

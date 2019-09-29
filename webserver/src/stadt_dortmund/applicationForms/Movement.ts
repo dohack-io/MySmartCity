@@ -60,7 +60,4 @@ export class Movement extends AApplicationForm<MovementData> {
             && tData.postalCode !== undefined
             && tData.street !== undefined;
     }
-    
-    public applicationFormDescription = "Umziehen";
-    public applicationFormTitle = "Umzug melden";
 }

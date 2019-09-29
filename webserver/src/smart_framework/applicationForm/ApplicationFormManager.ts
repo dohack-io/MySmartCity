@@ -1,17 +1,16 @@
 import { AApplicationForm } from "./AApplicationForm";
 import { ApplicationFormCategory, ApplicationFormFactory, ApplicationFormFactoryCollection } from "./ApplicationFormCategory";
-import { Collection, MongoClient, Db } from "mongodb";
+import { Db } from "mongodb";
 import { ApplicationFormRestMetadata } from "./ApplicationFormMetadata";
 import User from "../user_management/User";
 import { ApplicationFormOverview } from "../server/ApplicationFormsRoute";
 import { getFullId } from "./Utils";
-import { getCollection } from "../Utils";
+import { LanguageManager } from "../i18n/LanguageManager";
 
 /**
  * Informationen für eine Kategorie
  */
 export type CategoryInformation = {
-    categoryName: string,
     categoryId: string,
     forms: ApplicationFormFactoryCollection
 }
@@ -33,7 +32,7 @@ export class ApplicationFormManager {
      */
     public addCategories(collection: CategoryInformation[]): ApplicationFormManager {
         for (let categoryInfo of collection) {
-            this.createCategory(categoryInfo.categoryName, categoryInfo.forms, categoryInfo.categoryId);
+            this.createCategory(categoryInfo.forms, categoryInfo.categoryId);
         }
 
         return this;
@@ -41,12 +40,11 @@ export class ApplicationFormManager {
 
     /**
      * Erstellt eine neue Kategorie im Manager
-     * @param categoryName Name der neuen Kategorie
      * @param forms Anträge, welche diese Kategorie enthalten soll
      * @param categoryId ID der Kategorie
      */
-    public createCategory(categoryName: string, forms: ApplicationFormFactoryCollection, categoryId: string = undefined) {
-        let category = new ApplicationFormCategory(categoryId, categoryName);
+    public createCategory(forms: ApplicationFormFactoryCollection, categoryId: string = undefined) {
+        let category = new ApplicationFormCategory(categoryId);
         category.addRequest(forms);
 
         this.categories[category.categoryId] = category;
@@ -88,8 +86,9 @@ export class ApplicationFormManager {
     /**
      * Gibt einen Überblick der vorhandenen Anträge zurück
      */
-    public getOverview(database: Db): ApplicationFormOverview {
+    public async getOverview(database: Db, user: User): Promise<ApplicationFormOverview> {
         let result: ApplicationFormOverview = {};
+        let i18n = new LanguageManager(database);
 
         for (let category of Object.values(this.categories)) {
             let entrys: ApplicationFormRestMetadata[] = [];
@@ -97,16 +96,15 @@ export class ApplicationFormManager {
 
             for (let form of Object.keys(elements)) {
 
-                let infoInstance = new elements[form](database, null);
+                let infoInstance = new elements[form](database, getFullId(category.categoryId, form), null);
 
-                entrys.push({
-                    applicationFormDescription: infoInstance.applicationFormDescription,
-                    applicationFormTitle: infoInstance.applicationFormTitle,
-                    fullName: category.categoryId + "/" + form
-                });
+                let metadata = await infoInstance.getMetadata(user) as ApplicationFormRestMetadata;
+                metadata.fullName = category.categoryId + "/" + form;
+
+                entrys.push(metadata);
             }
 
-            result[category.categoryName] = entrys;
+            result[await i18n.getText("form_"+category.categoryId, user)] = entrys;
         }
 
         return result;

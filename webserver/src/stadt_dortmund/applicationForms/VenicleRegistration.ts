@@ -7,10 +7,6 @@ interface VenicleData {
 }
 
 export class VenicleRegistration extends AApplicationForm<VenicleData>{
-    
-    public applicationFormDescription: string = "Hier können Sie ihr neues KFZ Fahrzeug anmelden";
-
-    public applicationFormTitle: string = "KFZ Fahrzeug anmelden";
 
     public validateDataType(data: any): data is VenicleData {
         let tData = data as VenicleData;

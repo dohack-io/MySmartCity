@@ -24,7 +24,8 @@ export class ApplicationFormsRoute implements IServerRoute {
     }
 
     async handleOverview(req: RequestExtention, res: express.Response) : Promise<void> {
-        let overview = this.manager.getOverview(req.database);
+        let user = checkUser(req, res);
+        let overview = await this.manager.getOverview(req.database, user);
         res.send(overview);
     }
 
