@@ -65,11 +65,11 @@ sap.ui.define([
 						break;
 
 					case Constants.DATETIME:
-						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, "2018-12-17T03:24:00", "2018-12-17T03:24:00"));
+						oForm.addFormElement(that.addDateTimeInput(oElement.id, oElement.label, oElement.placeholder, new Date(oElement.min), new Date(oElement.max)));
 						break;
 
 					case Constants.DATE:
-						oForm.addFormElement(that.addDateInput(oElement.id, oElement.label, oElement.placeholder, "2018-12-17T03:24:00", "2018-12-17T03:24:00"));
+						oForm.addFormElement(that.addDateInput(oElement.id, oElement.label, oElement.placeholder, new Date(oElement.min), new Date(oElement.max)));
 						break;
 
 					case Constants.FILE:
@@ -110,13 +110,13 @@ sap.ui.define([
 			debugger;
 		},
 
-
-
 		addDateTimeInput: function (isID, isLabel, isPlaceholder, isMinDate, isMaxDate) {
 			var newFormElement = this.addFormElement(isLabel);
 			var newField = new sap.m.DateTimePicker(isID);
 			newField.setPlaceholder(isPlaceholder);
 			newFormElement.addField(newField);
+			newField.setMinDate(isMinDate);
+			newField.setMaxDate(isMaxDate);
 			return newFormElement;
 		},
 
@@ -125,6 +125,8 @@ sap.ui.define([
 			var newField = new sap.m.DatePicker(isID);
 			newField.setPlaceholder(isPlaceholder);
 			newFormElement.addField(newField);
+			newField.setMinDate(isMinDate);
+			newField.setMaxDate(isMaxDate);
 			return newFormElement;
 		},
 
