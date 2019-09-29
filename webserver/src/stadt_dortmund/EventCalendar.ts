@@ -22,8 +22,6 @@ export class EventCalendar extends ACalendarSource {
     public async addCalendarItems(response: CalendarItemResponse): Promise<void> {
         let data = await this.fetchData();
 
-        data = data.filter(e => e.title.indexOf("Bier") !== -1);
-
         data.forEach(e=> {
             let converted: CalendarItem = {
                 color: "#ffe800",

@@ -1,5 +1,7 @@
+import { ObjectID } from "bson";
+
 export type PlainFormField<T> = {
-    requestId?: string,
+    _id?: ObjectID,
     userId?: string,
     id: keyof T,
     label: string,
