@@ -5,7 +5,20 @@ This is a template, please fill it with your teams data. Places to fill in data 
 //TODO: describe your project
 
 ## Built with
-//TODO: lists the technologies you use and their purpose
+**Database**
+* MongoDB V4.0.9(Community)
+
+**Server**
+* Node.js V11.6.0
+* Express V4.17.1
+* TypeScript V3.5.2
+
+**WebApp**
+* SAP UI5 V1.52.5
+
+**IDE**
+Visual Studio Code
+
 
 ## What benefit will your work bring in smart city context?
 //TODO: list benefits and tell us your motivation in working on this topic
