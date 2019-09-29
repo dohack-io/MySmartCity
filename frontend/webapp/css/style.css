@@ -1,0 +1,26 @@
+.equalColumns .columns {
+    height: 50%;
+    width: 50%;
+}
+
+.equalColumns .columns .sapMFlexItem {
+    width: 50%;
+    height: 50%;
+	margin: 0 5px 0 0;
+	padding: 10px;
+}
+
+.page2BgImg1 {
+    background-image: url('../calendar1.jpg');
+    background-size: 100% 100%;
+  }
+
+  .page2BgImg2 {
+    background-image: url('../calendar2.jpg');
+    background-size: 100% 100%;
+  }
+
+  .page2BgImg3 {
+    background-image: url('../calendar3.jpg');
+    background-size: 100% 100%;
+  }
