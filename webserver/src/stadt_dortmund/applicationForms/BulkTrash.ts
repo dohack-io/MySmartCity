@@ -2,6 +2,7 @@ import { AApplicationForm, GeneralRequest } from "../../smart_framework/applicat
 import { FormField } from "../../smart_framework/applicationForm/RequestField";
 import { CalendarItem } from "../../smart_framework/cityCalendar/CalendarItem";
 import moment = require("moment");
+import { ObjectID, ObjectId } from "bson";
 
 export interface BulkTrashData {
     date: Date;
@@ -63,7 +64,7 @@ export class BulkTrash extends AApplicationForm<BulkTrashData> {
             && tData.street !== undefined;
     }
 
-    protected async saveToDatabase(data: BulkTrashData) : Promise<void> {
+    protected async saveToDatabase(data: BulkTrashData) : Promise<ObjectId> {
         data.attachedEvent = {
             color: "#550000",
             description: "Your Bulk Trash Appointment",
@@ -72,6 +73,6 @@ export class BulkTrash extends AApplicationForm<BulkTrashData> {
             tenative: true,
             title: "Bulk Trash"
         };
-        await super.saveToDatabase(data);
+        return super.saveToDatabase(data);
     }
 }

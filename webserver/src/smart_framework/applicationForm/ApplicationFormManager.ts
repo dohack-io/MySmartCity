@@ -3,9 +3,9 @@ import { ApplicationFormCategory, ApplicationFormFactory, ApplicationFormFactory
 import { Db } from "mongodb";
 import { ApplicationFormRestMetadata } from "./ApplicationFormMetadata";
 import User from "../user_management/User";
-import { ApplicationFormOverview } from "../server/ApplicationFormsRoute";
 import { getFullId } from "./Utils";
 import { LanguageManager } from "../i18n/LanguageManager";
+import { ApplicationFormOverview } from "./ApplicationFormsOverview";
 
 /**
  * Informationen für eine Kategorie

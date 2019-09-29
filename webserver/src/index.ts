@@ -7,7 +7,8 @@ import { NotificationManager } from "./smart_framework/notifications/Notificatio
 import CalendarManager from "./smart_framework/cityCalendar/CalendarManager";
 import { SimpleTrashCalendar } from "./stadt_dortmund/SimpleTrashCalendar";
 import { EventCalendar } from "./stadt_dortmund/EventCalendar";
-import { BulkTrash, BulkTrashCalendarItems } from "./stadt_dortmund/applicationForms/BulkTrash";
+import { BulkTrash } from "./stadt_dortmund/applicationForms/BulkTrash";
+import { EmbeddedCalendarItems } from "./stadt_dortmund/EmbeddedCalendarItems";
 
 new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     .useCors()
@@ -18,7 +19,7 @@ new MySmartCityServer(3000, "mongodb://localhost:27017", "mysmartcity")
     )
     .useCalendar(
         new CalendarManager()
-            .addCalendarSource(BulkTrashCalendarItems)
+            .addCalendarSource(EmbeddedCalendarItems)
             .addCalendarSource(SimpleTrashCalendar)
             .addCalendarSource(EventCalendar)
     )
